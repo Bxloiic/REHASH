@@ -17,22 +17,6 @@ public class Hash {
     // Constructors
     /*
      * EFFECTS: creates a hash (clothing item) with given name, colour, material,
-     * types all
-     * set as empty strings
-     * initaliizes tags as an empty arrayList and sets liked to false
-     */
-    public Hash() {
-        this.name = "";
-        this.type = "";
-        this.colour = "";
-        this.material = "";
-        this.liked = false; // item is not saved in
-        this.tags = new ArrayList<>();
-    }
-
-    // Constructors
-    /*
-     * EFFECTS: creates a hash (clothing item) with given name, colour, material,
      * types.
      * initaliizes tags as an empty arrayList and sets liked to false
      */
@@ -110,7 +94,7 @@ public class Hash {
      * MODIFIES: this
      * EFFECTS: unlikes hash by changing it's state
      */
-    public boolean unLikedHash() {
+    public boolean unlikedHash() {
         setLiked(false); // set liked to false
         return this.liked;
     }
@@ -140,10 +124,10 @@ public class Hash {
     /*
      * REQUIRES: a non-empty list
      * MODIFIES: this, tags
-     * EFFECTS: removes tag at specified index
+     * EFFECTS: removes tag by the specified string value
      */
-    public void removeTag(int index) {
-        this.tags.remove(index); // removed ibject at specified index
+    public void removeTag(String str) {
+        this.tags.remove(str); // removed ibject at specified index
     }
 
     /*
@@ -151,8 +135,8 @@ public class Hash {
      */
     @Override
     public String toString() {
-        return "Item: " + name + " (" + type + "), Color: " + colour + ", Material: " + material + 
-               ", Liked: " + liked + ", Tags: " + tags;
+        return "Item: " + name + " (" + type + "), Color: " + colour + ", Material: " + material +
+                ", Liked: " + liked + ", Tags: " + tags;
     }
 
 }

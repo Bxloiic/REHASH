@@ -1,27 +1,16 @@
 package main.model;
 
-import java.util.*;  //imports whole java util library
+import java.util.*; //imports whole java util library
 
 //a virtual closet that can be customized to make a uniquely themed closet
 public class Hashdex {
 
     // Attributes
-    private String name;               // name of hashdex
-    private String colour;             // colour (hashdex image) of hashdex
+    private String name; // name of hashdex
+    private String colour; // colour (hashdex image) of hashdex
     private LinkedList<Hash> hashList; // LinkedList for the hashdex (allows hashes to be add, stored, etc)
 
     // Constructors
-    /*
-     * EFFECTS: creates a blank (default) Hashdex with attributes set to blank
-     * (relative to the type)
-     * name is set to "Untitled"; colour is set to "white"
-     * empty linkedlist is implemented
-     */
-    public Hashdex() {
-        this.name = "Untitled";  // sets name to a default string to signify basic constructor imple
-        this.colour = "white";   // se
-    }
-
     /*
      * REQUIRES: name and colour to have a non-zero length
      * EFFECTS: creates a closet (hashdex) with the desired features which are set
@@ -59,6 +48,10 @@ public class Hashdex {
 
     public LinkedList<Hash> getHashList() {
         return hashList;
+    }
+
+    public int getHashListSize() {
+        return hashList.size();
     }
 
     // *---------METHODS---------*
@@ -116,11 +109,9 @@ public class Hashdex {
      */
     public void saveHash(Hash hash) {
         if (hash.getLiked()) { // Only add if liked
-            hashList.add(hash);  // gets hashlist and adds     
-        } 
+            hashList.add(hash); // gets hashlist and adds
+        }
     }
-
-
 
     /*
      * EFFECTS: displays hashdex name and it's hashes
@@ -129,6 +120,5 @@ public class Hashdex {
     public String toString() {
         return "Hashdex: " + name + " - Items: " + hashList.toString();
     }
-
 
 }
