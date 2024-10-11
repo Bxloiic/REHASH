@@ -116,11 +116,8 @@ public class Hashdex {
      */
     public void saveHash(Hash hash) {
         if (hash.getLiked()) { // Only add if liked
-            hashList.add(hash);  // gets hashlist and adds 
-            System.out.println(hash.getName() + " has been added to " + this.name);
-        } else {
-            System.out.println(hash.getName() + " has not been liked yet.");
-        }
+            hashList.add(hash);  // gets hashlist and adds     
+        } 
     }
 
 

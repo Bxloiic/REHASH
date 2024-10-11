@@ -2,8 +2,8 @@ package main.model;
 
 // imports
 import java.util.*; //imports whole java util library
-//the objects that will be added to closet
 
+//the objects that will be added to closet
 public class Hash {
 
     // Attributes
@@ -102,8 +102,7 @@ public class Hash {
      * EFFECTS: likes hash by changing it's state
      */
     public boolean likedHash() {
-        setLiked(true);  //sets liked to true
-        System.out.println(getName() + " hash has been liked!");
+        setLiked(true); // sets liked to true
         return this.liked;
     }
 
@@ -111,24 +110,22 @@ public class Hash {
      * MODIFIES: this
      * EFFECTS: unlikes hash by changing it's state
      */
-    public boolean unLikedHash(){
-        setLiked(false);  //set liked to false
-        System.out.println(getName() + " hash has be UNliked!");
+    public boolean unLikedHash() {
+        setLiked(false); // set liked to false
         return this.liked;
     }
 
     /*
      * EFFECTS: displays the tags saved in the arrayList
      */
-    public void displayTags(){
-        for (String e: tags){
+    public void displayTags() {
+        for (String e : tags) { // iterators over the tags list and prints it's elements
             System.out.println(e);
         }
     }
 
-    public void addTag(String tags){
-        this.tags.add(tags);  //adds a inputed tag to arraylist
-        System.out.println("Tag has been added SUCCESSFULLY...");
+    public void addTag(String tags) {
+        this.tags.add(tags); // adds a inputed tag to arraylist
     }
 
     /*
@@ -136,9 +133,8 @@ public class Hash {
      * MODIFIES: this, tags
      * EFFECTS: removes most recently added tag
      */
-    public void removeTag(){
-        this.tags.remove(tags.size()-1);  // removes the most recently added element
-        System.out.println("Tag has been removed");
+    public void removeTag() {
+        this.tags.remove(tags.size() - 1); // removes the most recently added element
     }
 
     /*
@@ -146,9 +142,17 @@ public class Hash {
      * MODIFIES: this, tags
      * EFFECTS: removes tag at specified index
      */
-    public void removeTag(int index){
-        this.tags.remove(index);   //removed ibject at specified index
-        System.out.println("Tag  at index:"+ index + " has been removed");
+    public void removeTag(int index) {
+        this.tags.remove(index); // removed ibject at specified index
+    }
+
+    /*
+     * EFFECTS: returns the details of the Hash as a formatted string
+     */
+    @Override
+    public String toString() {
+        return "Item: " + name + " (" + type + "), Color: " + colour + ", Material: " + material + 
+               ", Liked: " + liked + ", Tags: " + tags;
     }
 
 }
