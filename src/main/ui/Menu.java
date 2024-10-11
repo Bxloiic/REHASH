@@ -20,6 +20,9 @@ public class Menu {
     private Scanner scanner;
     private Week week;
     private Hashdex hashdex;
+    private List<Hash> hashes;
+    private List<Hashdex> hashdexes;
+    private List<Outfit> outfits;
     private boolean valid = true;
     private int input;
     private String uinput;
@@ -32,6 +35,11 @@ public class Menu {
         scanner = new Scanner(System.in); // takes user input from terminal
         week = new Week();
         hashdex = new Hashdex("Default Closet", "Neutral"); // there's a default hashdex until it's edited or removed
+        hashes = new ArrayList<>(); // Initialize the list to store created hashes
+        hashdexes = new ArrayList<>(); // Initialize the list to store created hashdexs
+        hashdexes.add(hashdex);
+        outfits = new ArrayList<>();
+
     }
 
     public void drawMenu() {
@@ -105,6 +113,7 @@ public class Menu {
         String material = scanner.nextLine(); // saves user input as material
 
         Hash hash = new Hash(name, type, colour, material); // create hash object
+        hashes.add(hash); // Add this line to store the created hash
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made a hash!");
         System.out.println(GREEN + "To see your hash, press [1]...");
         System.out.println("To add hash to hashdex, press [2]...");
@@ -146,6 +155,8 @@ public class Menu {
         System.out.println("What is the theme (colour) of the Hashdex?: ");
         String colour = scanner.nextLine(); // saves user input as colour
         Hashdex hash = new Hashdex(name, colour); // create hash object
+
+        hashdexes.add(hash); // Store the created hashdex
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made a Hashdex!");
         System.out.println(GREEN + "To see your hashdex, press [1]...");
         System.out.println("To return to main menu, press [0]...");
@@ -193,6 +204,7 @@ public class Menu {
             Hash selectedHash = hashdex.getHashList().get(hashIndex);
             Outfit outfit = new Outfit(name, selectedHash);
 
+            outfits.add(outfit);
             System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
             System.out.println(GREEN + "To see your Outfit, press [1]...");
             System.out.println("To return to main menu, press [0]...");
@@ -223,13 +235,14 @@ public class Menu {
         System.out.println(RED + "\nadding hash to hashdex..." + GREEN);
         System.out.println("Enter Hashdex Name: ");
         String name = scanner.next();
-        for (Hash h : hashdex.getHashList()) {
-            if (h.getName().equals(name)) {
+        for (Hash h : hashes) {
+            if (h.getName().equalsIgnoreCase(name)) {
                 hashdex.addHash(h);
                 System.out.println(YELLOW + "\nHash has been added to your Hashdex!!!");
                 return;
             }
         }
+
         System.out.println("Hash not found.");
         System.out.println(GREEN + "To see your hashdex, press [1]...");
         System.out.println("To return to main menu, press [0]...");
@@ -291,6 +304,7 @@ public class Menu {
      */
     private void viewWeekOutfit() {
         System.out.println(RED + "\nViewing outfits for the week:" + GREEN);
+
         week.displayWeek(); // Display outfits assigned to the week (use displayWeek() method in Week class)
         System.out.println("\nTo return to main menu, press [0]...");
         input = scanner.nextInt();
@@ -311,7 +325,12 @@ public class Menu {
      */
     private void viewHashdexs() {
         System.out.println(RED + "\nViewing your Hashdexes (closets):" + GREEN);
-        hashdex.displayList(); // Display items in the hashdex (use displayList() method in Hashdex class)
+        for (Hashdex h : hashdexes) {
+            h.displayList(); // Display items in the hashdex (use displayList() method in Hashdex class)
+            System.out.println();
+
+        }
+
         System.out.println("\nTo return to main menu, press [0]...");
         input = scanner.nextInt();
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
