@@ -49,11 +49,17 @@ public class Week {
      */
 
     public void displayWeek() {
-        // iterates through keys of the hashmaps and displays the day with corresponding
-        // outfit
-        for (String day : outfits.keySet()) {
-            Outfit outfit = outfits.get(day);
-            System.out.println(day + ": " + outfit.getName());
+        if (outfits.isEmpty()) {
+            System.out.println("No outfits assigned for the week.");
+        } else {
+            for (String day : outfits.keySet()) {
+                Outfit outfit = outfits.get(day);
+                if (outfit != null) {
+                    System.out.println(day + ": " + outfit.getName());
+                } else {
+                    System.out.println(day + ": No outfit assigned.");
+                }
+            }
         }
     }
 

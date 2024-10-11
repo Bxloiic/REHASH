@@ -19,10 +19,10 @@ public class Main {
         System.out.print(
                 "It’s also for those who want to build collections as share their personal styles to others who can appreciate their creation.");
         System.out.println("\n--------------------------------\n");
-       
-        //Calls user ui class
+
+        // Calls user ui class
         Menu m = new Menu();
-        m.displayMenu();
+        m.drawMenu();
 
     }
 

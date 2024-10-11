@@ -234,8 +234,8 @@ public class RehashTest {
         assertEquals(1, testHashDex.getHashListSize()); // Should not add second hash
     }
 
-    @Test 
-    void testHashdexSetters(){
+    @Test
+    void testHashdexSetters() {
         testHashDex.setColour("green");
         testHashDex.setName("Paris Fashion");
 
@@ -251,7 +251,7 @@ public class RehashTest {
     }
 
     @Test
-    void testHashdexGetters(){
+    void testHashdexGetters() {
         assertEquals("Formal Wear", testHashDex.getName());
         assertEquals("Black and White", testHashDex.getColour());
     }
@@ -301,8 +301,6 @@ public class RehashTest {
         assertTrue(testWeek.getOutfits().isEmpty()); // checks if the outfits hashmap is empty
         assertEquals(0, testWeek.getOutfits().size());
     }
-    
-
 
     // ------------ Outfit Class Tests ------------
     @Test
@@ -316,17 +314,16 @@ public class RehashTest {
         assertEquals(1, testOutfit.getHashs().size()); // tests if arraylist size (number of ekemnts) is correct
     }
 
-    @Test 
-    void testOutfitSetter(){
+    @Test
+    void testOutfitSetter() {
         // new hash and araylist of hash to test
         Hash tHash = new Hash("X Earrings", "jewelery", "gold", "metal");
-        ArrayList<Hash> oHash= new ArrayList<>();
+        ArrayList<Hash> oHash = new ArrayList<>();
         oHash.add(tHash);
 
         assertEquals("going-out", testOutfit.getName()); // tests to see if outfit name is being assigned correctly
         assertTrue(testOutfit.getHashs().contains(testHash)); // tests if hash is being added the string
         assertEquals(1, testOutfit.getHashs().size()); // tests if arraylist size (number of ekemnts) is correct
-
 
         testOutfit.setHashs(oHash);
         assertTrue(testOutfit.getHashs().contains(tHash)); // tests if hash is being added the string
@@ -335,13 +332,13 @@ public class RehashTest {
     }
 
     @Test
-    void testDisplayOutfit(){
+    void testDisplayOutfit() {
         // expected string output
         String expected = "Outfit: going-out\n" + //
-                        " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: []]";
+                " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: []]";
         assertEquals(expected, testOutfit.toString());
     }
 
-    
+
 
 }

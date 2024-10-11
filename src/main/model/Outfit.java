@@ -12,6 +12,7 @@ public class Outfit {
 
     // Constructors
     /*
+     * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name
      * initaliizes items as an empty arrayList
      */
@@ -40,15 +41,15 @@ public class Outfit {
     }
 
     // *---------METHODS---------*
-     /*
+    /*
      * EFFECTS: displays hash name and it's hashes
      */
     @Override
     public String toString() {
-        if (hashs.isEmpty()){
+        if (hashs.isEmpty()) {
             return "No items";
-            
-        } else{
+
+        } else {
             return "Outfit: " + name + "\n - Items: " + hashs.toString();
         }
     }

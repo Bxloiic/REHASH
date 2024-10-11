@@ -94,16 +94,6 @@ public class Hashdex {
     }
 
     /*
-     * REQUIRES: a non-empty list
-     * EFFECTS: displays the elements of the linkedlist
-     */
-    public void displayList() {
-        for (Hash h : hashList) {// cycles through every element in the list
-            System.out.println(h);// prints the elements in the lsit
-        }
-    }
-
-    /*
      * MODIFIES: this, hashList
      * EFFECTS: adds hash to hashList if hash is liked
      */
@@ -116,9 +106,16 @@ public class Hashdex {
     /*
      * EFFECTS: displays hashdex name and it's hashes
      */
-    @Override
-    public String toString() {
-        return "Hashdex: " + name + " - Items: " + hashList.toString();
+    public void displayList() {
+        System.out.println("Hashdex Name: " + name);
+        if (hashList.isEmpty()) {
+            System.out.println("This hashdex is empty.");
+        } else {
+            System.out.println("Items in this hashdex:");
+            for (Hash hash : hashList) {
+                System.out.println(hash.getName() + " (" + hash.getType() + ", " + hash.getColour() + ")");
+            }
+        }
     }
 
 }
