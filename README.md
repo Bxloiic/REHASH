@@ -16,7 +16,7 @@ It’s an essential aspect of life as others always get a first impression from 
 - As a user, I want to be able to select a hash and add it to one of my personal collections (hashdex).
 - As a user, I want to be able to create a new hashdex and customize it with a name, profile image, and tags.
 - As a user, I want to be able to view a list of all my created hashdexes.
-- As a user, I want to be able to organize outfits for the week and view them in a calendar format.
+- As a user, I want to be able to organize outfits for certain days of the week and view them in a calendar format.
 
 ### Features:
 - Explore different clothing styles
