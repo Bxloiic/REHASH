@@ -47,13 +47,14 @@ public class Week {
     /*
      * EFFECTS: displays the week with each days corresponding outfit
      */
-    public void displayCalendar() {
+
+    public void displayWeek() {
         // iterates through keys of the hashmaps and displays the day with corresponding
         // outfit
         for (String day : outfits.keySet()) {
             Outfit outfit = outfits.get(day);
             System.out.println(day + ": " + outfit.getName());
         }
-    } 
+    }
 
 }

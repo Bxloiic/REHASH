@@ -8,16 +8,17 @@ public class Outfit {
 
     // Attributes
     private String name; // Name of the item
-    private ArrayList<String> hashs; // Tags to describe the style (casual, formal, etc)
+    private ArrayList<Hash> hashs; // Tags to describe the style (casual, formal, etc)
 
     // Constructors
     /*
      * EFFECTS: creates a outfit with a given name
-     * initaliizes hashs as an empty arrayList
+     * initaliizes items as an empty arrayList
      */
-    public Outfit(String name, List<String> hashs) {
+    public Outfit(String name, Hash testHash) {
         this.name = name;
         this.hashs = new ArrayList<>();
+        this.hashs.add(testHash); // adds hash to the neww array
     }
 
     // ---------GETTERS---------
@@ -25,7 +26,7 @@ public class Outfit {
         return name;
     }
 
-    public ArrayList<String> getHashs() {
+    public ArrayList<Hash> getHashs() {
         return hashs;
     }
 
@@ -34,17 +35,21 @@ public class Outfit {
         this.name = name;
     }
 
-    public void setHashs(ArrayList<String> hashs) { // sets
+    public void setHashs(ArrayList<Hash> hashs) { // sets
         this.hashs = hashs;
     }
 
     // *---------METHODS---------*
-    /*
-     * EFFECTS: displays outfit
+     /*
+     * EFFECTS: displays hash name and it's hashes
      */
-    public void displayOutfit() {
-        for (String e : hashs) {
-            System.out.println(e); // iterators over the tags list and prints it's elements
+    @Override
+    public String toString() {
+        if (hashs.isEmpty()){
+            return "No items";
+            
+        } else{
+            return "Outfit: " + name + "\n - Items: " + hashs.toString();
         }
     }
 

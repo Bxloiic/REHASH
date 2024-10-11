@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class RehashTest {
 
     // fields
     private Hash testHash;
+    private Hash testHassh;
     private Hashdex testHashDex;
     private Week testWeek;
     private Outfit testOutfit;
@@ -25,10 +25,8 @@ public class RehashTest {
         testHashDex = new Hashdex("Formal Wear", "Black and White");
         testWeek = new Week();
 
-        List<String> hashs = Arrays.asList("Shirt", "Pants", "Shoes");
-        List<String> outfit = Arrays.asList("Hat", "shirt", "Shoes");
-        testOutfit = new Outfit("going-out", hashs);
-        testOutfit1 = new Outfit("fit", outfit);
+        testOutfit = new Outfit("going-out", testHash);
+        testOutfit1 = new Outfit("fit", testHassh);
 
     }
 
@@ -152,7 +150,7 @@ public class RehashTest {
     }
 
     @Test
-    void AddMultiHash() {
+    void testAddMultiHash() {
         Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
         Hash hassh = new Hash("dress pants", "pants", "blue", "cotton");
         testHashDex.addHash(hash);
@@ -164,10 +162,101 @@ public class RehashTest {
 
     }
 
-    
+    @Test
+    void testRemoveHash() {
+        Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
+        Hash hassh = new Hash("dress pants", "pants", "blue", "cotton");
+
+        testHashDex.addHash(hash);
+        testHashDex.addHash(hassh);
+        testHashDex.removeHash(); // removes most recently added item
+        assertEquals(1, testHashDex.getHashListSize());
+        assertTrue(testHashDex.getHashList().contains(hash));
+    }
+
+    @Test
+    void testRemoveMultiHash() {
+        Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
+        Hash hassh = new Hash("dress pants", "pants", "blue", "cotton");
+
+        testHashDex.addHash(hassh);
+        testHashDex.addHash(hash);
+        testHashDex.removeHash(); // removes most recently added item
+        assertEquals(1, testHashDex.getHashListSize());
+        assertTrue(testHashDex.getHashList().contains(hassh));
+
+        testHashDex.removeHash(); // removes most recently added item
+        assertTrue(!(testHashDex.getHashList().contains(hassh)));
+        assertTrue(!(testHashDex.getHashList().contains(hash)));
+        assertEquals(0, testHashDex.getHashListSize());
+    }
+
+    @Test
+    void testRemoveIndexHash() {
+        Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
+        Hash hassh = new Hash("dress pants", "pants", "blue", "cotton");
+
+        testHashDex.addHash(hash);
+        testHashDex.addHash(hassh);
+        testHashDex.removeHash(0); // removes item at specified index
+        assertEquals(1, testHashDex.getHashListSize());
+        assertTrue(testHashDex.getHashList().contains(hassh));
+    }
+
+    @Test
+    void testRemoveIndexMultiHash() {
+        Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
+        Hash hassh = new Hash("dress pants", "pants", "blue", "cotton");
+
+        testHashDex.addHash(hash);
+        testHashDex.addHash(hassh);
+        testHashDex.removeHash(1); // removes item at specified index
+        assertEquals(1, testHashDex.getHashListSize());
+        assertTrue(testHashDex.getHashList().contains(hash));
+
+        testHashDex.removeHash(0); // removes most recently added item
+        assertTrue(!(testHashDex.getHashList().contains(hassh)));
+        assertTrue(!(testHashDex.getHashList().contains(hash)));
+        assertEquals(0, testHashDex.getHashListSize());
+    }
+
+    @Test
+    void testSaveHash() {
+        Hash hash = new Hash("Shirt", "Top", "White", "Cotton");
+        hash.likedHash(); // Mark as liked
+
+        testHashDex.saveHash(hash);
+        assertEquals(1, testHashDex.getHashListSize());
+
+        Hash hash2 = new Hash("Pants", "Bottom", "Black", "Denim");
+        testHashDex.saveHash(hash2); // Not liked
+
+        assertEquals(1, testHashDex.getHashListSize()); // Should not add second hash
+    }
+
+    @Test 
+    void testHashdexSetters(){
+        testHashDex.setColour("green");
+        testHashDex.setName("Paris Fashion");
+
+        LinkedList<Hash> hashList = new LinkedList<>();
+        Hash tHash = new Hash("X Earrings", "jewelery", "gold", "metal");
+        hashList.add(testHash);
+        hashList.add(tHash);
+        testHashDex.setLinkedList(hashList);
+
+        assertEquals("green", testHashDex.getColour());
+        assertEquals("Paris Fashion", testHashDex.getName());
+        assertEquals(2, testHashDex.getHashListSize());
+    }
+
+    @Test
+    void testHashdexGetters(){
+        assertEquals("Formal Wear", testHashDex.getName());
+        assertEquals("Black and White", testHashDex.getColour());
+    }
 
     // ------------ Week Class Tests ------------
-
     @Test
     void testWeekConstructor() {
         assertTrue(testWeek.getOutfits().isEmpty()); // checks if the outfits hashmap is empty
@@ -212,5 +301,47 @@ public class RehashTest {
         assertTrue(testWeek.getOutfits().isEmpty()); // checks if the outfits hashmap is empty
         assertEquals(0, testWeek.getOutfits().size());
     }
+    
+
+
+    // ------------ Outfit Class Tests ------------
+    @Test
+    void testOutfitConstructor() {
+        ArrayList<Hash> outfitHash = new ArrayList<>();
+        outfitHash.add(testHash); // adds hash to outfit arraylist
+
+        testOutfit.setName("slay fit");
+        assertEquals("slay fit", testOutfit.getName()); // tests to see if outfit name is being assigned correctly
+        assertTrue(testOutfit.getHashs().contains(testHash)); // tests if hash is being added the string
+        assertEquals(1, testOutfit.getHashs().size()); // tests if arraylist size (number of ekemnts) is correct
+    }
+
+    @Test 
+    void testOutfitSetter(){
+        // new hash and araylist of hash to test
+        Hash tHash = new Hash("X Earrings", "jewelery", "gold", "metal");
+        ArrayList<Hash> oHash= new ArrayList<>();
+        oHash.add(tHash);
+
+        assertEquals("going-out", testOutfit.getName()); // tests to see if outfit name is being assigned correctly
+        assertTrue(testOutfit.getHashs().contains(testHash)); // tests if hash is being added the string
+        assertEquals(1, testOutfit.getHashs().size()); // tests if arraylist size (number of ekemnts) is correct
+
+
+        testOutfit.setHashs(oHash);
+        assertTrue(testOutfit.getHashs().contains(tHash)); // tests if hash is being added the string
+        assertEquals(1, testOutfit.getHashs().size()); // tests if arraylist size (number of ekemnts) is correct
+
+    }
+
+    @Test
+    void testDisplayOutfit(){
+        // expected string output
+        String expected = "Outfit: going-out\n" + //
+                        " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: []]";
+        assertEquals(expected, testOutfit.toString());
+    }
+
+    
 
 }

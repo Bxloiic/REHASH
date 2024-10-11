@@ -61,10 +61,10 @@ public class Hashdex {
      * MODIFIES: this
      * EFFECTS: sorts LinkedList in a alphabetical order
      */
-    public void sortByName() {
-        hashList.sort(null);// sorts the list alphabetically
-        // Collections.sort(hashList, Comparator.comparing(Hashdex::getName));
-    }
+    // public void sortByName() {
+    // hashList.sort(null);// sorts the list alphabetically
+    // // Collections.sort(hashList, Comparator.comparing(Hashdex::getName));
+    // }
 
     /*
      * REQUIRES: a instance of the hash class
@@ -89,7 +89,7 @@ public class Hashdex {
      * MODIFIES: this, hashList
      * EFFECTS: removes a hash at a specific index from the List
      */
-    public void remove(int index) {
+    public void removeHash(int index) {
         hashList.remove(index);
     }
 
