@@ -233,16 +233,30 @@ public class Menu {
      */
     private void addToHashdex() {
         System.out.println(RED + "\nadding hash to hashdex..." + GREEN);
-        System.out.println("Enter Hashdex Name: ");
-        String name = scanner.next();
+        System.out.println("Enter Hash Name: ");
+        String hashName = scanner.next();
+
+        Hash verifiedHash = null;
         for (Hash h : hashes) {
-            if (h.getName().equalsIgnoreCase(name)) {
-                hashdex.addHash(h);
-                System.out.println(YELLOW + "\nHash has been added to your Hashdex!!!");
-                return;
+            if (h.getName().equalsIgnoreCase(hashName)) {
+                verifiedHash = h;
+                break;
             }
         }
 
+        System.out.println("Enter Hash Name: ");
+        String hashdexName = scanner.next();
+
+        Hashdex verHashdex = null;
+        for (Hashdex hd : hashdexes) {
+            if (hd.getName().equalsIgnoreCase(hashdexName)) {
+                verHashdex = hd;
+                System.out.println(YELLOW + "\nHash has been added to your Hashdex!!!");
+                break;
+            }
+        }
+
+        verHashdex.addHash(verifiedHash);
         System.out.println("Hash not found.");
         System.out.println(GREEN + "To see your hashdex, press [1]...");
         System.out.println("To return to main menu, press [0]...");
