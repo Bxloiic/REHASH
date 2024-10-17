@@ -14,12 +14,12 @@ public class Outfit {
     /*
      * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name
-     * initaliizes items as an empty arrayList
+     * initalizes items as an empty arrayList
      */
-    public Outfit(String name, Hash testHash) {
+    public Outfit(String name) {
         this.name = name;
         this.hashs = new ArrayList<>();
-        this.hashs.add(testHash); // adds hash to the neww array
+        //this.hashs.add(testHash); // adds hash to the neww array
     }
 
     // ---------GETTERS---------
@@ -41,6 +41,13 @@ public class Outfit {
     }
 
     // *---------METHODS---------*
+     /*
+     * MODIFIES: this
+     * EFFECTS: adds hashes to outfit hashlist
+     */
+    public void addHash(Hash hash){
+        hashs.add(hash);
+    }
     /*
      * EFFECTS: displays hash name and it's hashes
      */

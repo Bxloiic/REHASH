@@ -104,7 +104,7 @@ public class Hashdex {
     }
 
     /*
-     * EFFECTS: displays hashdex name and it's hashes
+     * EFFECTS: displays hashdex object
      */
     public void displayList() {
         System.out.println("Hashdex Name: " + name);

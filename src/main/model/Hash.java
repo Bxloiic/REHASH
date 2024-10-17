@@ -108,8 +108,15 @@ public class Hash {
         }
     }
 
+    /*
+     * MODIFIES: this
+     * EFFECTS: if not alrady added, add tag to hash
+     */
     public void addTag(String tags) {
-        this.tags.add(tags); // adds a inputed tag to arraylist
+        if (!getTags().contains(tags)){
+            this.tags.add(tags); // adds a inputed tag to arraylist
+        }
+        
     }
 
     /*
@@ -137,6 +144,16 @@ public class Hash {
     public String toString() {
         return "Item: " + name + " (" + type + "), Color: " + colour + ", Material: " + material +
                 ", Liked: " + liked + ", Tags: " + tags;
+    }
+
+    /*
+     * EFFECTS: displays hashdex name and it's hashes
+     */
+    public void displayList() {
+        System.out.println("Hash Name: " + name);
+        System.out.println("Details of this hash: ");
+        System.out.println(getName() + " (" + getType() + ", " + getColour() + ", " + getMaterial() + ", " + getLiked() + ")");
+
     }
 
 }

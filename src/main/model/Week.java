@@ -49,10 +49,12 @@ public class Week {
      */
 
     public void displayWeek() {
+        List<String> daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
+
         if (outfits.isEmpty()) {
             System.out.println("No outfits assigned for the week.");
         } else {
-            for (String day : outfits.keySet()) {
+            for (String day : daysOfWeek) {
                 Outfit outfit = outfits.get(day);
                 if (outfit != null) {
                     System.out.println(day + ": " + outfit.getName());

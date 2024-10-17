@@ -22,7 +22,7 @@ public class Main {
 
         // Calls user ui class
         Menu m = new Menu();
-        m.drawMenu();
+        m.run();
 
     }
 
