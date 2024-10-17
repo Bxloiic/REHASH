@@ -3,23 +3,22 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
-// stores specific hashes to make an outfit
+// stores specifed hashes to make an outfit
 public class Outfit {
 
     // Attributes
     private String name; // Name of the item
-    private ArrayList<Hash> hashs; // Tags to describe the style (casual, formal, etc)
+    private ArrayList<Hash> outfitHashs; // Tags to describe the style (casual, formal, etc)
 
     // Constructors
     /*
      * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name
-     * initalizes items as an empty arrayList
+     * initalizes hashs (items) as an empty list
      */
     public Outfit(String name) {
         this.name = name;
-        this.hashs = new ArrayList<>();
-        //this.hashs.add(testHash); // adds hash to the neww array
+        this.outfitHashs = new ArrayList<>();
     }
 
     // ---------GETTERS---------
@@ -27,8 +26,8 @@ public class Outfit {
         return name;
     }
 
-    public ArrayList<Hash> getHashs() {
-        return hashs;
+    public ArrayList<Hash> getOutfitHashs() {
+        return outfitHashs;
     }
 
     // ---------SETTERS---------
@@ -36,28 +35,28 @@ public class Outfit {
         this.name = name;
     }
 
-    public void setHashs(ArrayList<Hash> hashs) { // sets
-        this.hashs = hashs;
+    public void setOutfitHashs(ArrayList<Hash> hashs) { // sets
+        this.outfitHashs = hashs;
     }
 
     // *---------METHODS---------*
-     /*
+    /*
      * MODIFIES: this
      * EFFECTS: adds hashes to outfit hashlist
      */
-    public void addHash(Hash hash){
-        hashs.add(hash);
+    public void addHash(Hash hash) {
+        outfitHashs.add(hash);
     }
+
     /*
-     * EFFECTS: displays hash name and it's hashes
+     * EFFECTS: displays the hashs that make the outfitHash list
      */
     @Override
     public String toString() {
-        if (hashs.isEmpty()) {
-            return "No items";
-
+        if (outfitHashs.isEmpty()) { // if list is empty
+            return "No items have been assigned to outfit!";
         } else {
-            return "Outfit: " + name + "\n - Items: " + hashs.toString();
+            return "Outfit: " + name + "\n - Items: " + outfitHashs.toString();
         }
     }
 

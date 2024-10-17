@@ -13,7 +13,6 @@ public class RehashTest {
 
     // fields
     private Hash testHash;
-    private Hash testHassh;
     private Hashdex testHashDex;
     private Week testWeek;
     private Outfit testOutfit;
@@ -397,8 +396,8 @@ public class RehashTest {
         assertEquals("slay fit", testOutfit.getName());
 
         testOutfit.addHash(testHash); // Add a hash after instantiation
-        assertTrue(testOutfit.getHashs().contains(testHash)); // Check if hash is added
-        assertEquals(1, testOutfit.getHashs().size()); // Check if size is correct
+        assertTrue(testOutfit.getOutfitHashs().contains(testHash)); // Check if hash is added
+        assertEquals(1, testOutfit.getOutfitHashs().size()); // Check if size is correct
     }
 
     @Test
@@ -407,9 +406,9 @@ public class RehashTest {
         ArrayList<Hash> oHash = new ArrayList<>();
         oHash.add(tHash);
 
-        testOutfit.setHashs(oHash);
-        assertTrue(testOutfit.getHashs().contains(tHash));
-        assertEquals(1, testOutfit.getHashs().size());
+        testOutfit.setOutfitHashs(oHash);
+        assertTrue(testOutfit.getOutfitHashs().contains(tHash));
+        assertEquals(1, testOutfit.getOutfitHashs().size());
     }
 
     @Test
@@ -423,7 +422,7 @@ public class RehashTest {
     @Test
     void testDisplayOutfitWithMultipleHashes() {
         Hash tHash = new Hash("Hat", "Accessory", "Red", "Fabric");
-        testOutfit.setHashs(new ArrayList<>(Arrays.asList(testHash, tHash)));
+        testOutfit.setOutfitHashs(new ArrayList<>(Arrays.asList(testHash, tHash)));
 
         String expected = "Outfit: going-out\n" +
                 " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: [], Item: Hat (Accessory), Color: Red, Material: Fabric, Liked: false, Tags: []]";

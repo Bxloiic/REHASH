@@ -27,7 +27,6 @@ public class Hash {
         this.material = material;
         this.liked = false;
         this.tags = new ArrayList<>();
-
     }
 
     // ---------SETTERS---------
@@ -100,7 +99,7 @@ public class Hash {
     }
 
     /*
-     * EFFECTS: displays the tags saved in the arrayList
+     * EFFECTS: displays the tags within the list
      */
     public void displayTags() {
         for (String e : tags) { // iterators over the tags list and prints it's elements
@@ -110,13 +109,13 @@ public class Hash {
 
     /*
      * MODIFIES: this
-     * EFFECTS: if not alrady added, add tag to hash
+     * EFFECTS: if not already added, add tag to hash
      */
     public void addTag(String tags) {
-        if (!getTags().contains(tags)){
+        if (!getTags().contains(tags)) {
             this.tags.add(tags); // adds a inputed tag to arraylist
         }
-        
+
     }
 
     /*
@@ -147,12 +146,13 @@ public class Hash {
     }
 
     /*
-     * EFFECTS: displays hashdex name and it's hashes
+     * EFFECTS: displays hashs and it's attributes
      */
     public void displayList() {
         System.out.println("Hash Name: " + name);
         System.out.println("Details of this hash: ");
-        System.out.println(getName() + " (" + getType() + ", " + getColour() + ", " + getMaterial() + ", " + getLiked() + ")");
+        System.out.println(getName() + ":  Type: " + getType() + ", Colour: " + getColour() + ", Material: "
+                + getMaterial() + ", Liked:" + getLiked());
 
     }
 

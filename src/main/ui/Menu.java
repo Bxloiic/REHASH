@@ -4,7 +4,7 @@ package main.ui;
 import main.model.*;
 import java.util.*; //  imports entire java.util library
 
-//represents the menu screens the user can choose from
+//represents the menu screens options the user can use
 public class Menu {
 
     // ANSI escape codes for text colors
@@ -114,7 +114,7 @@ public class Menu {
 
         scanner.nextLine();
         System.out.println(GREEN + "To create a new hash, please answer the questions below: ");
-        System.out.println("What is the name of the object?: ");
+        System.out.println("What is the name of the item?: ");
         String name = scanner.nextLine();// saves user input as a name
 
         System.out.println("What is the type of " + name + ": ");
@@ -191,56 +191,6 @@ public class Menu {
     }
 
     /*
-     * REQUIRES: non-zero length
-     * EFFECTS: creates a outfit with a given name
-     * initaliizes items as an empty arrayList
-     */
-    private void createOutfit() {
-        System.out.println(RED + "\ncreating an outfit..." + GREEN);
-        if (hashes.isEmpty()) {
-            System.out.println("Can't make outfit! No hashes have been made yet!");
-            return;
-        }
-
-        System.out.println("Enter Outfit Name: ");
-        String outfitName = scanner.nextLine();
-
-        Outfit of = new Outfit(outfitName);
-
-        // Let the user choose a hash to add to the outfit
-        System.out.println("Select a hash from your Hashdex:");
-        String name = scanner.nextLine();
-        of.setName(outfitName);
-
-        for (Hash h : hashes) {// cycles through created hashes
-            if (h.getName().equals(name)) {
-                if (!of.getHashs().contains(h)) {
-                    of.addHash(h);
-                }
-            }
-        }
-        outfits.add(of);
-        System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
-        System.out.println(GREEN + "To see your Outfit, press [1]...");
-        System.out.println("To return to main menu, press [0]...");
-        input = scanner.nextInt();
-        scanner.nextLine(); // makes sure it doesn't read future inputs wrong
-        switch (input) {
-            case 1:
-                viewWeekOutfit();
-                break;
-            case 0:
-                drawMenu();
-                break;
-            default:
-                System.out.println("Invalid input! Returning to main menu.");
-                drawMenu();
-                break;
-        }
-
-    }
-
-    /*
      * MODIFIES: this, hashdex
      * EFFECTS: adds a created hash to a hashdex if not already there
      * initaliizes tags as an empty arrayList and sets liked to false
@@ -301,11 +251,65 @@ public class Menu {
     }
 
     /*
+     * REQUIRES: non-zero length
+     * EFFECTS: creates a outfit with a given name
+     * initaliizes items as an empty arrayList
+     */
+    private void createOutfit() {
+        scanner.nextLine();
+        System.out.println(RED + "\ncreating an outfit...");
+        if (hashes.isEmpty()) {
+            System.out.println("Can't make outfit! No hashes have been made yet!" + GREEN);
+            return;
+        }
+
+        System.out.println("Assign an Outfit Name: ");
+        String outfitName = scanner.nextLine();
+
+        Outfit of = new Outfit(outfitName);
+
+        // Let the user choose a hash to add to the outfit
+        System.out.println("Select a hash (enter hash name):");
+        String name = scanner.nextLine();
+
+        for (Hash h : hashes) {// cycles through created hashes
+            if (h.getName().equals(name)) {
+                if (!of.getOutfitHashs().contains(h)) {
+                    of.addHash(h);
+                }
+            }
+        }
+        outfits.add(of); // adds outfit to created outfit list
+        System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
+        System.out.println(GREEN + "To see your Outfit, press [1]...");
+        System.out.println(GREEN + "To add outfit to day of the week, press [2]...");
+        System.out.println("To return to main menu, press [0]...");
+        input = scanner.nextInt();
+        scanner.nextLine(); // makes sure it doesn't read future inputs wrong
+        switch (input) {
+            case 2:
+                addOutfitToDay(of);
+                break;
+            case 1:
+                viewWeekOutfit();
+                break;
+            case 0:
+                drawMenu();
+                break;
+            default:
+                System.out.println("Invalid input! Returning to main menu.");
+                drawMenu();
+                break;
+        }
+
+    }
+
+    /*
      * MODIFIES: this, week
      * EFFECTS: adds outfit to a days of the week
      */
     private void addOutfitToDay(Outfit outfit) {
-        if (outfits.isEmpty()) { // checks if there are any outfits in the outfit ;list
+        if (outfits.isEmpty()) { // checks if there are any outfits in the outfit list
             System.out.println(RED + "No outfits available to view...");
             return;
         } else { // make an oufit for a specific day
@@ -313,7 +317,8 @@ public class Menu {
             System.out.println("Enter a day of the week (e.g., Monday): ");
             String day = scanner.nextLine();
 
-            // adds outfit to the day of the week (if another outfit is added to a day with an outfit)
+            // adds outfit to the day of the week (if another outfit is added to a day with
+            // an outfit)
             // the old outfit is override and replaced with the newly added outfit
             week.getOutfits().put(day, outfit); // Assign the outfit to the specified day
             System.out.println(YELLOW + "\nOutfit assigned to " + day + "!");
@@ -384,6 +389,9 @@ public class Menu {
 
     }
 
+    /*
+     * EFFECTS: displays made hashes
+     */
     private void viewHashs() {
         System.out.println(RED + "\nViewing your Hashs...:" + GREEN);
         if (hashes.isEmpty()) {

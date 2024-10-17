@@ -67,9 +67,9 @@ public class Hashdex {
     // }
 
     /*
-     * REQUIRES: a instance of the hash class
+     * REQUIRES: a non-empty hash
      * MODIFIES: this, hashList
-     * EFFECTS: add hash to hashdex
+     * EFFECTS: adds hash to hashdex
      */
     public void addHash(Hash e) {// e stands for
         hashList.add(e);
@@ -104,7 +104,7 @@ public class Hashdex {
     }
 
     /*
-     * EFFECTS: displays hashdex object
+     * EFFECTS: displays hashdex
      */
     public void displayList() {
         System.out.println("Hashdex Name: " + name);
