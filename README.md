@@ -17,6 +17,9 @@ It’s an essential aspect of life as others always get a first impression from 
 - As a user, I want to be able to create a new hashdex and customize it.
 - As a user, I want to be able to view a list of all my created hashdexes.
 - As a user, I want to be able to organize outfits for certain days of the week and view them in a calendar format.
+- As a user, I want to be able to I wanted to be able to save my current **REHASH** state, including all created hashes, hashdexes, and planned outfits, so I can resume where I left off
+- As a user, I want to be able to choose between my saved **REHASH** states or starting fresh
+- As a user, I want to be able to reset or clear specific data, including created hashes, hashes in hashdexes, entire hashdexes, or planned outfits for a specific day
 
 ### Features:
 - Explore different clothing styles
