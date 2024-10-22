@@ -1,5 +1,6 @@
 package main.ui;
 
+//runs the application
 public class Main {
     // ANSI escape codes for text colors
     public static final String RESET = "\u001B[0m";
@@ -11,13 +12,12 @@ public class Main {
     public static final String CYAN = "\u001B[36m";
 
     public static void main(String[] args) {
-
         // Welcome message
         System.out.println(GREEN + "\nWelcome user to REHASH!");
-        System.out.println(
-                "REHASH is designed for anyone who seeks inspiration for outfits, whether it’s for daily wear, or wardrobe planning for the week.");
-        System.out.print(
-                "It’s also for those who want to build collections as share their personal styles to others who can appreciate their creation.");
+        System.out.println("REHASH is designed for anyone who seeks inspiration for outfits,");
+        System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
+        System.out.println(" \nIt’s also for those who want to build collections");
+        System.out.print("as share their personal styles to others who can appreciate their creation.");
         System.out.println("\n--------------------------------\n");
 
         // Calls user ui class

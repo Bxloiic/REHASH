@@ -141,8 +141,9 @@ public class Hash {
      */
     @Override
     public String toString() {
-        return "Item: " + name + " (" + type + "), Color: " + colour + ", Material: " + material +
-                ", Liked: " + liked + ", Tags: " + tags;
+        String tostring = "Item: " + name + " (" + type + "), Color: "
+                + colour + ", Material: " + material + ", Liked: " + liked + ", Tags: " + tags;
+        return tostring;
     }
 
     /*

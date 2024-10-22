@@ -71,7 +71,7 @@ public class Hashdex {
      * MODIFIES: this, hashList
      * EFFECTS: adds hash to hashdex
      */
-    public void addHash(Hash e) {// e stands for
+    public void addHash(Hash e) { // e stands for
         hashList.add(e);
     }
 

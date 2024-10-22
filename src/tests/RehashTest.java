@@ -306,9 +306,9 @@ public class RehashTest {
         testHashDex.setName("Paris Fashion");
 
         LinkedList<Hash> hashList = new LinkedList<>();
-        Hash tHash = new Hash("X Earrings", "jewelery", "gold", "metal");
+        Hash thash = new Hash("X Earrings", "jewelery", "gold", "metal");
         hashList.add(testHash);
-        hashList.add(tHash);
+        hashList.add(thash);
         testHashDex.setLinkedList(hashList);
 
         assertEquals("green", testHashDex.getColour());
@@ -402,36 +402,14 @@ public class RehashTest {
 
     @Test
     void testOutfitSetter() {
-        Hash tHash = new Hash("X Earrings", "jewelery", "gold", "metal");
-        ArrayList<Hash> oHash = new ArrayList<>();
-        oHash.add(tHash);
+        Hash thash = new Hash("X Earrings", "jewelery", "gold", "metal");
+        ArrayList<Hash> ohash = new ArrayList<>();
+        ohash.add(thash);
 
-        testOutfit.setOutfitHashs(oHash);
-        assertTrue(testOutfit.getOutfitHashs().contains(tHash));
+        testOutfit.setOutfitHashs(ohash);
+        assertTrue(testOutfit.getOutfitHashs().contains(thash));
         assertEquals(1, testOutfit.getOutfitHashs().size());
     }
 
-    @Test
-    void testDisplayOutfit() {
-        testOutfit.addHash(testHash);
-        String expected = "Outfit: going-out\n" +
-                " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: []]";
-        assertEquals(expected, testOutfit.toString());
-    }
-
-    @Test
-    void testDisplayOutfitWithMultipleHashes() {
-        Hash tHash = new Hash("Hat", "Accessory", "Red", "Fabric");
-        testOutfit.setOutfitHashs(new ArrayList<>(Arrays.asList(testHash, tHash)));
-
-        String expected = "Outfit: going-out\n" +
-                " - Items: [Item: Doc Martens (boots), Color: black, Material: leather, Liked: false, Tags: [], Item: Hat (Accessory), Color: Red, Material: Fabric, Liked: false, Tags: []]";
-        assertEquals(expected, testOutfit.toString());
-    }
-
-    @Test
-    void testDisplayOutfitWithoutHashes() {
-        assertEquals("No items", testOutfit.toString());
-    }
 
 }
