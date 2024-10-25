@@ -4,6 +4,8 @@ package main.ui;
 import main.model.*;
 import main.persistance.JsonReader;
 import main.persistance.JsonWriter;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -27,11 +29,13 @@ public class Menu {
     private List<Hashdex> hashdexes;
     private List<Outfit> outfits;
     private boolean valid = true;
-    private int input;
     private Map<String, Object> data;
+    private int input;
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
+    private boolean running;
     private static final String JSON_STORE = "./data/Rehash.json";
+    private static final String EMPTY_DATA_JSON = "{ \"hashes\": [], \"hashdexes\": [], \"outfits\": [] }";
 
     // Constructor
     /*
@@ -59,27 +63,49 @@ public class Menu {
      * EFFECTS: draws menu options
      */
     public void run() {
-        drawMenu();
+        running = true;
+        while (running) {
+            drawMainMenu();
+        }
     }
 
-    public void drawMenu() {
+    /*
+     * EFFECTS: draws menu options for user to choose from
+     */
+    private void drawMainMenu() {
         try {
-            while (valid) {
-                System.out.println(CYAN + "Please Enter an Integer to select one of the following options: " + GREEN);
-                System.out.println("1. Create a new Hash (clothing item)");
-                System.out.println("2. Create a HashDex");
-                System.out.println("3. Add Hash to Hashdex (closet)");
-                System.out.println("4. Create an Outfit");
-                System.out.println("5. View Outfits for the week day");
-                System.out.println("6. View Hashs (items)");
-                System.out.println("7. View Hashdexes (closet)");
-                System.out.println("8. Save Data"); // New option
-                System.out.println("9. Load Data"); // New option
-                System.out.println("10. Exit");
-                // Exception handling
-                input = scanner.nextInt(); // only takes in valid integer
-                handleMenuSelection(input);
+            while (true) {
+                System.out.println(CYAN + "WELCOME TO REHASH, CHOOSE YOUR STORAGE TYPE: " + GREEN);
+                System.out.println("1. Clear Current Data");
+                System.out.println("2. Clear Past Data");
+                System.out.println("3. Start a New");
+                System.out.println("0. Exit REHASH");
+
+                int input = scanner.nextInt();
+                handleDataSelection(input);
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input! Application exited. Please try again");
+            scanner.nextLine();
+        }
+    }
+
+    public void drawRehashMenu() {
+        try {
+
+            System.out.println(CYAN + "Please Enter an Integer to select one of the following options: " + GREEN);
+            System.out.println("1. Create a new Hash (clothing item)");
+            System.out.println("2. Create a HashDex");
+            System.out.println("3. Add Hash to Hashdex (closet)");
+            System.out.println("4. Create an Outfit");
+            System.out.println("5. View Outfits for the week day");
+            System.out.println("6. View Hashs (items)");
+            System.out.println("7. View Hashdexes (closet)");
+            System.out.println("0. Exit");
+
+            int inputh = scanner.nextInt();
+            handleMenuSelection(inputh);
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid input! Application exited. Please try again");
             scanner.nextLine();
@@ -87,6 +113,9 @@ public class Menu {
 
     }
 
+    /*
+     * EFFECTS: handles user input for appilciation menu
+     */
     private void handleMenuSelection(int input) {
         switch (input) {
             case 1:
@@ -110,21 +139,43 @@ public class Menu {
             case 7:
                 viewHashdexs();
                 break;
-            case 8:
-                saveData();
-                break;
-            case 9:
-                loadData();
-                break;
             case 10:
                 valid = false;
                 System.out.println(RED + "\nEXITING REHASH...");
                 System.exit(0);
             default:
-                // System.out.println(RED + "Invalid input! Please try again.");
-                drawMenu(); // Repeat the menu
+                drawRehashMenu(); // Repeat the menu
                 break;
         }
+    }
+
+    /*
+     * EFFECTS: handles user input for data menu
+     */
+    private void handleDataSelection(int input) {
+        switch (input) {
+            case 1:
+                clearData();
+                break;
+            case 2:
+                clearPastData();
+                break;
+            case 3:
+                startFresh();
+                break;
+            case 0:
+                System.out.println("Exiting the application...");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid input! Please try again.");
+                break;
+        }
+
+        if (running) {
+            drawRehashMenu();
+        }
+
     }
 
     // MODIFIES: this
@@ -151,12 +202,40 @@ public class Menu {
         }
     }
 
+    // EFFECTS: clears current data by writing empty JSON to the file
+    private static void clearData() {
+        try (FileWriter fileWriter = new FileWriter(JSON_STORE)) {
+            fileWriter.write(EMPTY_DATA_JSON);
+            System.out.println("\nAll Data Cleared " + JSON_STORE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: starts fresh (could mean clearing all data and creating a new state)
+     */
+    private void startFresh() {
+        clearData(); // Clear current data to start fresh
+        System.out.println("Started fresh! All current data has been cleared.");
+    }
+
+    /**
+     * MODIFIES: this
+     * EFFECTS: clears past data
+     */
+    private void clearPastData() {
+        clearData();
+        System.out.println(PURPLE + "Past data cleared...");
+    }
+
     /*
      * EFFECTS: creates a hash (clothing item) with given name, colour, material,
      * types from user
      * initaliizes tags as an empty arrayList and sets liked to false
      */
-
     private void createHash() {
         System.out.println(RED + "\nCreating new hash...");
 

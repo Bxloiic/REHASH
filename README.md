@@ -19,6 +19,7 @@ It’s an essential aspect of life as others always get a first impression from 
 - As a user, I want to be able to organize outfits for certain days of the week and view them in a calendar format.
 - As a user, I want to be able to I wanted to be able to save my current **REHASH** state, including all created hashes, hashdexes, and planned outfits
 - As a user, I want to be able to load my saved **REHASH** state
+- As a user, I want to be able to clear my saved **REHASH** state
 
 
 ### Features:
