@@ -1,0 +1,30 @@
+{
+    "hashdexes": [
+        {
+            "name": "Metalliac"
+        },
+        {
+            "name": "My inner fashion"
+        }
+    ],
+    "hashes": [
+        {
+            "name": "bb belt",
+            "type": "accessory",
+            "colour": "black",
+            "material": "leather",
+            "liked": true,
+            "tags": ["fashion", "belt"]
+        },
+        {
+            "name": "sailor shirt",
+            "type": "top",
+            "colour": "blue",
+            "material": "cotton",
+            "liked": false,
+            "tags": ["casual", "shirt"]
+        }
+    ],
+    "outfits": []
+}
+

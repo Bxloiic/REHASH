@@ -1,0 +1,43 @@
+{
+    "hashdexes": [{
+        "colour": "Blackish",
+        "name": "Hamptons Chic",
+        "hashes": [{
+            "colour": "Black",
+            "material": "Leather",
+            "name": "BB Belt",
+            "type": "Belt"
+        }]
+    }],
+    "hashes": [
+        {
+            "colour": "Black",
+            "material": "Leather",
+            "name": "BB Belt",
+            "type": "Belt"
+        },
+        {
+            "colour": "Black",
+            "material": "Fur",
+            "name": "K Kicks",
+            "type": "Moon Boots"
+        }
+    ],
+    "outfits": [{
+        "name": "Kendall Aspin Fit",
+        "hashes": [
+            {
+                "colour": "Black",
+                "material": "Leather",
+                "name": "BB Belt",
+                "type": "Belt"
+            },
+            {
+                "colour": "Black",
+                "material": "Fur",
+                "name": "K Kicks",
+                "type": "Moon Boots"
+            }
+        ]
+    }]
+}

@@ -1,7 +1,8 @@
 package main.persistance;
 
-//Imports
-import main.model.*;
+// Referenced from the JsonSerialization Demo
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
 import java.io.*;
 import java.util.*;
 import org.json.*;
@@ -9,7 +10,6 @@ import org.json.*;
 import main.model.Hash;
 import main.model.Hashdex;
 import main.model.Outfit;
-import main.ui.Menu;
 
 //Writes the data to be stored into a file
 public class JsonWriter {
@@ -40,7 +40,7 @@ public class JsonWriter {
         json.put("outfits", outfitsToJson(outfits));
 
         try (FileWriter file = new FileWriter(this.file)) {
-            file.write(json.toString(TAB)); // Write JSON with an indentation of 4 spaces
+            file.write(json.toString(TAB));
         }
     }
 
@@ -56,28 +56,60 @@ public class JsonWriter {
         for (Outfit o : outfits) {
             JSONObject json = new JSONObject();
             json.put("name", o.getName());
+            // Convert the hashes within this outfit to JSON
+            JSONArray hashesJson = new JSONArray();
+
+            for (Hash h : o.getOutfitHashs()) {
+                // objects
+                JSONObject hashJson = new JSONObject();
+                hashJson.put("type", h.getType());
+                hashJson.put("name", h.getName());
+                hashJson.put("colour", h.getColour());
+                hashJson.put("material", h.getMaterial());
+                hashesJson.put(hashJson);
+            }
+            json.put("hashes", hashesJson);
             jsonArray.put(json);
         }
         return jsonArray;
     }
 
+    // EFFECTS: returns JSON array of hashes
     private JSONArray hashesToJson(List<Hash> hashes) {
         JSONArray jsonArray = new JSONArray();
         for (Hash h : hashes) {
             JSONObject json = new JSONObject();
+            json.put("type", h.getType());
             json.put("name", h.getName());
+            json.put("colour", h.getColour());
+            json.put("material", h.getMaterial());
             jsonArray.put(json);
         }
 
         return jsonArray;
     }
 
+    // EFFECTS: returns JSON array of hashdex
     private JSONArray hashdexesToJson(List<Hashdex> hashdexs) {
         JSONArray jsonArray = new JSONArray();
         for (Hashdex h : hashdexs) {
             JSONObject json = new JSONObject();
             json.put("name", h.getName());
+            json.put("colour", h.getColour());
+
+            JSONArray hashesJson = new JSONArray();
+            for (Hash hash : h.getHashList()) {
+                // objects
+                JSONObject hashJson = new JSONObject();
+                hashJson.put("type", hash.getType());
+                hashJson.put("name", hash.getName());
+                hashJson.put("colour", hash.getColour());
+                hashJson.put("material", hash.getMaterial());
+                hashesJson.put(hashJson);
+            }
+            json.put("hashes", hashesJson);
             jsonArray.put(json);
+
         }
 
         return jsonArray;

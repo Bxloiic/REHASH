@@ -1,4 +1,4 @@
-package tests;
+package tests.model;
 
 import main.model.*; // imports all classes in the model package
 

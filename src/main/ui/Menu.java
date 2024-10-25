@@ -31,7 +31,7 @@ public class Menu {
     private Map<String, Object> data;
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
-    private static final String JSON_STORE = "./data/appData.json";
+    private static final String JSON_STORE = "./data/Rehash.json";
 
     // Constructor
     /*
@@ -73,7 +73,9 @@ public class Menu {
                 System.out.println("5. View Outfits for the week day");
                 System.out.println("6. View Hashs (items)");
                 System.out.println("7. View Hashdexes (closet)");
-                System.out.println("8. Exit");
+                System.out.println("8. Save Data"); // New option
+                System.out.println("9. Load Data"); // New option
+                System.out.println("10. Exit");
                 // Exception handling
                 input = scanner.nextInt(); // only takes in valid integer
                 handleMenuSelection(input);
@@ -109,12 +111,18 @@ public class Menu {
                 viewHashdexs();
                 break;
             case 8:
+                saveData();
+                break;
+            case 9:
+                loadData();
+                break;
+            case 10:
                 valid = false;
                 System.out.println(RED + "\nEXITING REHASH...");
                 System.exit(0);
             default:
-                //System.out.println(RED + "Invalid input! Please try again.");
-                drawMenu();
+                // System.out.println(RED + "Invalid input! Please try again.");
+                drawMenu(); // Repeat the menu
                 break;
         }
     }

@@ -1,5 +1,8 @@
 package main.persistance;
 
+// Referenced from the JsonSerialization Demo
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
 import org.json.*;
 
 public interface Writable { 

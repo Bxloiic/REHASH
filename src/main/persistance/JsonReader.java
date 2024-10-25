@@ -1,5 +1,8 @@
 package main.persistance;
 
+// Referenced from the JsonSerialization Demo
+// https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
 //Imports
 import main.model.*;
 import java.io.IOException;
@@ -11,7 +14,7 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// Represents a reader that reads data from JSON stored in file
+// Represents a reader that reads data from JSON stored in file 
 public class JsonReader {
     private String source;
 
