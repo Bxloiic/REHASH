@@ -2,7 +2,10 @@ package main.ui;
 
 // imports
 import main.model.*;
-import java.util.*; //  imports entire java.util library
+import main.persistance.JsonReader;
+import main.persistance.JsonWriter;
+import java.io.IOException;
+import java.util.*;
 
 //represents the menu screens options the user can use
 public class Menu {
@@ -25,6 +28,10 @@ public class Menu {
     private List<Outfit> outfits;
     private boolean valid = true;
     private int input;
+    private Map<String, Object> data;
+    private JsonReader jsonReader;
+    private JsonWriter jsonWriter;
+    private static final String JSON_STORE = "./data/appData.json";
 
     // Constructor
     /*
@@ -39,6 +46,11 @@ public class Menu {
         hashdexes = new ArrayList<>(); // Initialize the list to store created hashdexs
         hashdexes.add(hashdex);
         outfits = new ArrayList<>();
+
+        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_STORE);
+
+        loadData(); // Load data at the start
 
     }
 
@@ -62,7 +74,7 @@ public class Menu {
                 System.out.println("6. View Hashs (items)");
                 System.out.println("7. View Hashdexes (closet)");
                 System.out.println("8. Exit");
-                 // Exception handling
+                // Exception handling
                 input = scanner.nextInt(); // only takes in valid integer
                 handleMenuSelection(input);
             }
@@ -101,9 +113,33 @@ public class Menu {
                 System.out.println(RED + "\nEXITING REHASH...");
                 System.exit(0);
             default:
-                System.out.println(RED + "Invalid input! Please try again.");
+                //System.out.println(RED + "Invalid input! Please try again.");
                 drawMenu();
                 break;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads hashes, hashdex, and outfits from file
+    private void loadData() {
+        try {
+            data = jsonReader.read();
+            hashes = (List<Hash>) data.get("hashes");
+            hashdexes = (List<Hashdex>) data.get("hashdexes");
+            outfits = (List<Outfit>) data.get("outfits");
+            System.out.println(GREEN + "Data successfully loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println(RED + "Error loading data from file: " + e.getMessage());
+        }
+    }
+
+    // EFFECTS: saves hashes, hashdex, and outfits to file
+    private void saveData() {
+        try {
+            jsonWriter.write(hashes, hashdexes, outfits);
+            System.out.println(GREEN + "Data successfully saved to " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println(RED + "Error saving data to file: " + e.getMessage());
         }
     }
 
@@ -174,7 +210,7 @@ public class Menu {
      */
     private void addToHashdex() {
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
-        System.out.println(RED + "\nadding hash to hashdex..." + GREEN);
+        System.out.println(RED + "\n---Adding hash to Library---" + GREEN);
         System.out.println("Enter Hash Name: ");
         String hashName = scanner.nextLine(); // stores name of hash
         Hash verifiedHash = null;
@@ -222,7 +258,6 @@ public class Menu {
             System.out.println("Can't make outfit! No hashes have been made yet!" + GREEN);
             return;
         }
-
         System.out.println("Assign an Outfit Name: ");
         String outfitName = scanner.nextLine();
 
@@ -278,7 +313,22 @@ public class Menu {
     private void viewWeekOutfit() {
         System.out.println(RED + "\nViewing outfits for the week...:" + GREEN);
 
-        week.displayWeek(); // Display outfits assigned to the week (use displayWeek() method in Week class)
+        // Display outfits assigned to the week (use displayWeek() method in Week class)
+        List<String> daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+                "Sunday");
+
+        if (outfits.isEmpty()) {
+            System.out.println("No outfits have been assigned for the week.");
+        } else {
+            for (String day : daysOfWeek) { // cycles through daysOfTheWeek
+                Outfit outfit = week.getOutfits().get(day);// get outfit for that day
+                if (outfit != null) { // if day has an assigned outfit...
+                    System.out.println(day + ": " + outfit.getName());
+                } else { // if day doesn't have an outfit assigned
+                    System.out.println(day + ": No outfit assigned.");
+                }
+            }
+        }
         System.out.println("\nTo return to main menu, press [0]...");
         input = scanner.nextInt();
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
@@ -291,24 +341,22 @@ public class Menu {
     private void viewHashdexs() {
         System.out.println(RED + "\nViewing your Hashdexes (closets):" + GREEN);
         for (Hashdex h : hashdexes) {
-            h.displayList(); // Display items in the hashdex (use displayList() method in Hashdex class)
+            // Display items in the hashdex (use displayList() method in Hashdex class)
+            System.out.println("Hashdex Name: " + h.getName());
+            if (h.getHashList().isEmpty()) {
+                System.out.println("This hashdex is empty.");
+            } else {
+                System.out.println("Items in this hashdex:");
+                for (Hash hash : h.getHashList()) {
+                    System.out.println(hash.getName() + " (" + hash.getType() + ", " + hash.getColour() + ")");
+                }
+            }
             System.out.println();
 
         }
         System.out.println("\nTo return to main menu, press [0]...");
         input = scanner.nextInt();
-        scanner.nextLine(); // makes sure it doesn't read future inputs wrong
-        switch (input) {
-            case 0:
-                drawMenu();
-                System.out.println("\n");
-                break;
-            default:
-                System.out.println("Invalid input! Returning to main menu.");
-                drawMenu();
-                break;
-        }
-
+        handleMenuSelection(input);
     }
 
     /*
@@ -322,7 +370,12 @@ public class Menu {
 
         }
         for (Hash h : hashes) {
-            h.displayList(); // Display items in the hashdex (use displayList() method in Hashdex class)
+            // Display items in the hashdex (use displayList() method in Hashdex class)
+            System.out.println("Hash Name: " + h.getName());
+            System.out.println("Details of this hash: ");
+            System.out.println(h.getName() + ":  Type: " + h.getType() + ", Colour: " + h.getColour() + ", Material: "
+                    + h.getMaterial() + ", Liked:" + h.getLiked());
+
             System.out.println();
 
         }
@@ -332,6 +385,5 @@ public class Menu {
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
         handleMenuSelection(input);
     }
-
 
 }

@@ -103,19 +103,6 @@ public class Hashdex {
         }
     }
 
-    /*
-     * EFFECTS: displays hashdex
-     */
-    public void displayList() {
-        System.out.println("Hashdex Name: " + name);
-        if (hashList.isEmpty()) {
-            System.out.println("This hashdex is empty.");
-        } else {
-            System.out.println("Items in this hashdex:");
-            for (Hash hash : hashList) {
-                System.out.println(hash.getName() + " (" + hash.getType() + ", " + hash.getColour() + ")");
-            }
-        }
-    }
+
 
 }

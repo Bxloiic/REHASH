@@ -45,26 +45,5 @@ public class Week {
         outfits.remove(day); // Remove the day and it's associated outfit
     }
 
-    /*
-     * EFFECTS: displays the week with each days corresponding outfit
-     */
-
-    public void displayWeek() {
-        List<String> daysOfWeek = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
-                "Sunday");
-
-        if (outfits.isEmpty()) {
-            System.out.println("No outfits have been assigned for the week.");
-        } else {
-            for (String day : daysOfWeek) { // cycles through daysOfTheWeek
-                Outfit outfit = outfits.get(day);// get outfit for that day
-                if (outfit != null) { // if day has an assigned outfit...
-                    System.out.println(day + ": " + outfit.getName());
-                } else { // if day doesn't have an outfit assigned
-                    System.out.println(day + ": No outfit assigned.");
-                }
-            }
-        }
-    }
 
 }

@@ -146,15 +146,6 @@ public class Hash {
         return tostring;
     }
 
-    /*
-     * EFFECTS: displays hashs and it's attributes
-     */
-    public void displayList() {
-        System.out.println("Hash Name: " + name);
-        System.out.println("Details of this hash: ");
-        System.out.println(getName() + ":  Type: " + getType() + ", Colour: " + getColour() + ", Material: "
-                + getMaterial() + ", Liked:" + getLiked());
 
-    }
 
 }
