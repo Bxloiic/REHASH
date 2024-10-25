@@ -79,6 +79,7 @@ public class Menu {
                 System.out.println("1. Clear Current Data");
                 System.out.println("2. Clear Past Data");
                 System.out.println("3. Start a New");
+                System.out.println("4. Continue where you left off...");
                 System.out.println("0. Exit REHASH");
 
                 int input = scanner.nextInt();
@@ -101,7 +102,8 @@ public class Menu {
             System.out.println("5. View Outfits for the week day");
             System.out.println("6. View Hashs (items)");
             System.out.println("7. View Hashdexes (closet)");
-            System.out.println("0. Exit");
+            System.out.println("8. Save Current Data");
+            System.out.println("9. Exit");
 
             int inputh = scanner.nextInt();
             handleMenuSelection(inputh);
@@ -139,7 +141,10 @@ public class Menu {
             case 7:
                 viewHashdexs();
                 break;
-            case 10:
+            case 8:
+                saveData();
+                break;
+            case 9:
                 valid = false;
                 System.out.println(RED + "\nEXITING REHASH...");
                 System.exit(0);
@@ -163,15 +168,17 @@ public class Menu {
             case 3:
                 startFresh();
                 break;
+            case 4:
+                drawRehashMenu();
+                break;
             case 0:
-                System.out.println("Exiting the application...");
+                //System.out.println("Exiting the application...");
                 System.exit(0);
                 break;
             default:
                 System.out.println("Invalid input! Please try again.");
                 break;
         }
-
         if (running) {
             drawRehashMenu();
         }
