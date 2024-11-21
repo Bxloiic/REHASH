@@ -33,6 +33,8 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of hashes, hashdexes, and outfits to file
+    // Referenced from the JsonSerialization Demo
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     public void write(List<Hash> hashes, List<Hashdex> hashdexes, List<Outfit> outfits) throws IOException {
         JSONObject json = new JSONObject();
         json.put("hashes", hashesToJson(hashes));
@@ -46,6 +48,8 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: closes writer
+    // Referenced from the JsonSerialization Demo
+    // https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     public void close() {
         writer.close();
     }

@@ -65,44 +65,21 @@ public class Menu {
     public void run() {
         running = true;
         while (running) {
-            drawMainMenu();
-        }
-    }
-
-    /*
-     * EFFECTS: draws menu options for user to choose from
-     */
-    private void drawMainMenu() {
-        try {
-            while (true) {
-                System.out.println(CYAN + "WELCOME TO REHASH, CHOOSE YOUR STORAGE TYPE: " + GREEN);
-                System.out.println("1. Clear Current Data");
-                System.out.println("2. Clear Past Data");
-                System.out.println("3. Start a New");
-                System.out.println("4. Continue where you left off...");
-                System.out.println("0. Exit REHASH");
-
-                int input = scanner.nextInt();
-                handleDataSelection(input);
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input! Application exited. Please try again");
-            scanner.nextLine();
+            drawRehashMenu();
         }
     }
 
     public void drawRehashMenu() {
         try {
-
             System.out.println(CYAN + "Please Enter an Integer to select one of the following options: " + GREEN);
-            System.out.println("1. Create a new Hash (clothing item)");
+            System.out.println("1. Create a Hash (clothing item)");
             System.out.println("2. Create a HashDex");
-            System.out.println("3. Add Hash to Hashdex (closet)");
-            System.out.println("4. Create an Outfit");
-            System.out.println("5. View Outfits for the week day");
-            System.out.println("6. View Hashs (items)");
-            System.out.println("7. View Hashdexes (closet)");
-            System.out.println("8. Save Current Data");
+            System.out.println("3. Create an Outfit");
+            System.out.println("4. Add Hash to Hashdex (closet)");
+            System.out.println("5. View Hashs (items)");
+            System.out.println("6. View Hashdexes (closet)");
+            System.out.println("7. View Outfits");
+            System.out.println("8. View Outfits for the week day");
             System.out.println("9. Exit");
 
             int inputh = scanner.nextInt();
@@ -142,47 +119,27 @@ public class Menu {
                 viewHashdexs();
                 break;
             case 8:
-                saveData();
+                viewOutfits();
                 break;
             case 9:
-                valid = false;
-                System.out.println(RED + "\nEXITING REHASH...");
-                System.exit(0);
+                exitApplication();
+                break;
             default:
-                drawRehashMenu(); // Repeat the menu
+                displayInvalidOptionMessage();
                 break;
         }
     }
 
-    /*
-     * EFFECTS: handles user input for data menu
-     */
-    private void handleDataSelection(int input) {
-        switch (input) {
-            case 1:
-                clearData();
-                break;
-            case 2:
-                clearPastData();
-                break;
-            case 3:
-                startFresh();
-                break;
-            case 4:
-                drawRehashMenu();
-                break;
-            case 0:
-                //System.out.println("Exiting the application...");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid input! Please try again.");
-                break;
-        }
-        if (running) {
-            drawRehashMenu();
-        }
+    // EFFECTS: exits program by unrunning menu
+    private void exitApplication() {
+        valid = false;
+        System.out.println(RED + "\nEXITING REHASH...");
+        System.exit(0);
+    }
 
+    // EFFECTS: displays the rehash menu
+    private void displayInvalidOptionMessage() {
+        drawRehashMenu(); // Repeat the menu
     }
 
     // MODIFIES: this
@@ -221,52 +178,40 @@ public class Menu {
     }
 
     /*
-     * MODIFIES: this
-     * EFFECTS: starts fresh (could mean clearing all data and creating a new state)
-     */
-    private void startFresh() {
-        clearData(); // Clear current data to start fresh
-        System.out.println("Started fresh! All current data has been cleared.");
-    }
-
-    /**
-     * MODIFIES: this
-     * EFFECTS: clears past data
-     */
-    private void clearPastData() {
-        clearData();
-        System.out.println(PURPLE + "Past data cleared...");
-    }
-
-    /*
      * EFFECTS: creates a hash (clothing item) with given name, colour, material,
      * types from user
      * initaliizes tags as an empty arrayList and sets liked to false
      */
     private void createHash() {
+        scanner.nextLine(); // consums extra inputs
         System.out.println(RED + "\nCreating new hash...");
 
-        scanner.nextLine();
-        System.out.println(GREEN + "To create a new hash, please answer the questions below: ");
-        System.out.println("What is the name of the item?: ");
-        String name = scanner.nextLine();// saves user input as a name
+        String name = getInput("What is the name of the item?: ");
+        String type = getInput("What is the type of " + name + ": ");
+        String colour = getInput("What is the colour of " + name + ": ");
+        String material = getInput("What is the material of " + name + ": ");
 
-        System.out.println("What is the type of " + name + ": ");
-        String type = scanner.nextLine(); // saves user input as type
-        System.out.println("What is the colour of " + name + ": ");
-        String colour = scanner.nextLine(); // saves user input as colour
-        System.out.println("What is the material of " + name + ": ");
-        String material = scanner.nextLine(); // saves user input as material
+        Hash hash = new Hash(name, type, colour, material);
+        hash.likedHash();
+        hashes.add(hash);
 
-        Hash hash = new Hash(name, type, colour, material); // create hash object
-        hash.likedHash(); // like the hash
-        hashes.add(hash); // Add this line to store the created hash
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made a hash!");
-        System.out.println(GREEN + "To see your hash, press [6]...");
-        System.out.println("To add hash to hashdex, press [3]...");
+        hashFollowUpAction();
+    }
+
+    // EFFECTS: gets user input
+    private String getInput(String prompt) {
+        System.out.println(GREEN + prompt);
+        return scanner.nextLine();
+    }
+
+    // EFFECTS: displays potential options of choice after hash is created
+    private void hashFollowUpAction() {
+        System.out.println(GREEN + "To see your hash, press [5]...");
+        System.out.println("To add hash to hashdex, press [4]...");
         System.out.println("To return to main menu, press [0]...");
         input = scanner.nextInt();
-        scanner.nextLine(); // makes sure it doesn't read future inputs wrong
+        scanner.nextLine();
         handleMenuSelection(input);
     }
 
@@ -290,7 +235,7 @@ public class Menu {
 
         hashdexes.add(hash); // Store the created hashdex
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made a Hashdex!");
-        System.out.println(GREEN + "To see your hashdex, press [7]...");
+        System.out.println(GREEN + "To see your hashdex, press [6]...");
         System.out.println("To return to main menu, press [0]...");
         input = scanner.nextInt();
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
@@ -303,41 +248,49 @@ public class Menu {
      * initaliizes tags as an empty arrayList and sets liked to false
      */
     private void addToHashdex() {
-        scanner.nextLine(); // makes sure it doesn't read future inputs wrong
-        System.out.println(RED + "\n---Adding hash to Library---" + GREEN);
-        System.out.println("Enter Hash Name: ");
-        String hashName = scanner.nextLine(); // stores name of hash
-        Hash verifiedHash = null;
-        for (Hash h : hashes) { // cycles through list of created hashes;
-            if (h.getName().equalsIgnoreCase(hashName)) { // stores hash in verified Hash
-                verifiedHash = h;
-                break;
-            }
-        }
-        if (verifiedHash == null) { // Check if hash is found
-            System.out.println("\nHash not found."); // if not
-            return; // Exit method if the hash was not found
-        }
-        System.out.println("Enter Hashdex Name: ");
-        String hashdexName = scanner.nextLine(); // stores hashdex name
+        String hashName = getInput("Enter Hash Name: ");
+        Hash verifiedHash = findHashByName(hashName);
 
-        Hashdex verHashdex = null;
-        for (Hashdex hd : hashdexes) { // cycles through list of created hashdexes
-            if (hd.getName().equalsIgnoreCase(hashdexName)) {
-                verHashdex = hd; // stores hash in verified Hashdex
-                System.out.println(YELLOW + "\nHash has been added to your Hashdex!!!");
-                break;
+        if (verifiedHash == null) {
+            System.out.println("\nHash not found.");
+            return;
+        }
+
+        String hashdexName = getInput("Enter Hashdex Name: ");
+        Hashdex verHashdex = findHashdexByName(hashdexName);
+
+        if (verHashdex == null) {
+            System.out.println("\nHashdex not found.");
+            return;
+        }
+
+        verHashdex.addHash(verifiedHash);
+        System.out.println(YELLOW + "\nHash has been added to your Hashdex!!!");
+        hashFollowUpAction();
+    }
+
+    /**
+     * EFFECTS: Searches for a hash by name. Returns null if not found.
+     */
+    private Hash findHashByName(String hashName) {
+        for (Hash h : hashes) {
+            if (h.getName().equalsIgnoreCase(hashName)) {
+                return h;
             }
         }
-        if (verHashdex == null) { // Check if hash is found
-            System.out.println("\nHashdex not found."); // if not
-            return; // Exit method if the hash was not found
+        return null;
+    }
+
+    /**
+     * EFFECTS: Searches for a hashdex by name. Returns null if not found.
+     */
+    private Hashdex findHashdexByName(String hashdexName) {
+        for (Hashdex hd : hashdexes) {
+            if (hd.getName().equalsIgnoreCase(hashdexName)) {
+                return hd;
+            }
         }
-        verHashdex.addHash(verifiedHash);
-        System.out.println(GREEN + "\nTo see your hashdex, press [7]...");
-        System.out.println("To return to main menu, press [0]...");
-        input = scanner.nextInt();
-        handleMenuSelection(input);
+        return null;
     }
 
     /*
@@ -346,12 +299,14 @@ public class Menu {
      * initaliizes items as an empty arrayList
      */
     private void createOutfit() {
-        scanner.nextLine();
+        scanner.nextLine(); // consumes any excess inputs
+
         System.out.println(RED + "\ncreating an outfit...");
         if (hashes.isEmpty()) {
             System.out.println("Can't make outfit! No hashes have been made yet!" + GREEN);
             return;
         }
+
         System.out.println("Assign an Outfit Name: ");
         String outfitName = scanner.nextLine();
 
@@ -368,13 +323,45 @@ public class Menu {
                 }
             }
         }
+
         outfits.add(of); // adds outfit to created outfit list
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
-        System.out.println(GREEN + "To see your Outfit, press [5]...");
+        outfitFollowUp();
+    }
+
+    private void outfitFollowUp() {
         System.out.println(GREEN + "To add outfit to day of the week, press [5]...");
+        System.out.println(GREEN + "To see your Outfit, press [7]...");
         System.out.println("To return to main menu, press [0]...");
         input = scanner.nextInt();
         scanner.nextLine(); // makes sure it doesn't read future inputs wrong
+        handleMenuSelection(input);
+    }
+
+    /*
+     * EFFECTS: displays the created outfits
+     */
+    private void viewOutfits() {
+        System.out.println(RED + "\nViewing your Outfits...:" + GREEN);
+        if (outfits.isEmpty()) {
+            System.out.println("No outfits have been created yet!");
+            return;
+        }
+
+        for (Outfit outfit : outfits) {
+            // Display the outfit's name and its included hashes
+            System.out.println("Outfit Name: " + outfit.getName());
+            System.out.println("Included items in this outfit:");
+
+            for (Hash hash : outfit.getOutfitHashs()) {
+                System.out.println("  - " + hash.getName() + " (" + hash.getType() + ", " + hash.getColour() + ")");
+            }
+
+            System.out.println();
+        }
+        System.out.println("\nTo return to main menu, press [0]...");
+        input = scanner.nextInt();
+        scanner.nextLine(); // ensures it doesn't read future inputs wrong
         handleMenuSelection(input);
     }
 
@@ -395,7 +382,7 @@ public class Menu {
             // the old outfit is override and replaced with the newly added outfit
             week.getOutfits().put(day, outfit); // Assign the outfit to the specified day
             System.out.println(YELLOW + "\nOutfit assigned to " + day + "!");
-            System.out.println("To view this weeks outfits, press [4]...");
+            System.out.println("To view this weeks outfits, press [8]...");
             System.out.println("To return to main menu, press [0]...");
             handleMenuSelection(input);
         }

@@ -62,7 +62,7 @@ public class JsonReader {
     // EFFECTS: parses a list of hashes from JSON array and returns it
     private List<Hash> parseHashes(JSONArray jsonArray) {
         List<Hash> hashes = new ArrayList<>();
-        for (Object json : jsonArray) { //cycles json objects in the array
+        for (Object json : jsonArray) { //cycles json objects in the arrayz
             JSONObject nextHash = (JSONObject) json; // get hashdex in JSON format
             String name = nextHash.getString("name"); // get name of hash
             String type = nextHash.getString("type"); // get type of hash
