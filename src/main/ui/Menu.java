@@ -34,6 +34,7 @@ public class Menu {
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
     private boolean running;
+    private DataPrinter dataPrinter;
     private static final String JSON_STORE = "./data/Rehash.json";
     private static final String EMPTY_DATA_JSON = "{ \"hashes\": [], \"hashdexes\": [], \"outfits\": [] }";
 
@@ -53,6 +54,7 @@ public class Menu {
 
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
+        dataPrinter = new DataPrinter();
 
         loadData(); // Load data at the start
 
@@ -71,16 +73,13 @@ public class Menu {
 
     public void drawRehashMenu() {
         try {
-            System.out.println(CYAN + "Please Enter an Integer to select one of the following options: " + GREEN);
-            System.out.println("1. Create a Hash (clothing item)");
-            System.out.println("2. Create a HashDex");
-            System.out.println("3. Create an Outfit");
-            System.out.println("4. Add Hash to Hashdex (closet)");
-            System.out.println("5. View Hashs (items)");
-            System.out.println("6. View Hashdexes (closet)");
-            System.out.println("7. View Outfits");
-            System.out.println("8. View Outfits for the week day");
-            System.out.println("9. Exit");
+            System.out.println(CYAN + "\nPlease Enter an Integer to select one of the following options: " + GREEN);
+            System.out.printf("%-40s%-40s%n", "1. Create a Hash (clothing item)", "2. Create a HashDex");
+            System.out.printf("%-40s%-40s%n", "3. Create an Outfit", "4. Add Hash to Hashdex (closet)");
+            System.out.printf("%-40s%-40s%n", "5. View Hashs (items)", "6. View Hashdexes (closet)");
+            System.out.printf("%-40s%-40s%n", "7. View Outfits", "8. View Outfits for the week day");
+            System.out.printf("%-40s%-40s%n", "10. Save Current Data", "11. View Loaded Data");
+            System.out.printf("%-40s%-40s%n", "12. Clear Current Data", "9. Exit");
 
             int inputh = scanner.nextInt();
             handleMenuSelection(inputh);
@@ -103,26 +102,35 @@ public class Menu {
             case 2:
                 createHashdex();
                 break;
-            case 3:
+            case 4:
                 addToHashdex();
                 break;
-            case 4:
+            case 3:
                 createOutfit();
                 break;
-            case 5:
+            case 8:
                 viewWeekOutfit();
                 break;
-            case 6:
+            case 5:
                 viewHashs();
                 break;
-            case 7:
+            case 6:
                 viewHashdexs();
                 break;
-            case 8:
+            case 7:
                 viewOutfits();
                 break;
             case 9:
                 exitApplication();
+                break;
+            case 10:
+                saveData();
+                break;
+            case 11:
+                viewLoadedData();
+                break;
+            case 12:
+                clearData();
                 break;
             default:
                 displayInvalidOptionMessage();
@@ -142,41 +150,67 @@ public class Menu {
         drawRehashMenu(); // Repeat the menu
     }
 
+    //----------------------- JSON DATA METHODS --------------------------
+    // EFFECTS: dislays all saved loaded data
+    private void viewLoadedData() {
+        System.out.println("\n");
+        DataPrinter.printLoadedData(data);
+    }
+
     // MODIFIES: this
     // EFFECTS: loads hashes, hashdex, and outfits from file
     private void loadData() {
         try {
+            // Load the data into a map
             data = jsonReader.read();
+            
+            // Populate your data from the map
             hashes = (List<Hash>) data.get("hashes");
             hashdexes = (List<Hashdex>) data.get("hashdexes");
             outfits = (List<Outfit>) data.get("outfits");
-            System.out.println(GREEN + "Data successfully loaded from " + JSON_STORE);
         } catch (IOException e) {
-            System.out.println(RED + "Error loading data from file: " + e.getMessage());
+            System.out.println("Failed to load data: " + e.getMessage());
         }
+    
     }
 
     // EFFECTS: saves hashes, hashdex, and outfits to file
-    private void saveData() {
+    public void saveData() {
         try {
+            // Create a JsonWriter instance
+            JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+            // Save the data (hashes, hashdexes, outfits)
+            jsonWriter.open();
             jsonWriter.write(hashes, hashdexes, outfits);
-            System.out.println(GREEN + "Data successfully saved to " + JSON_STORE);
+            jsonWriter.close();
+            System.out.println("Data successfully saved to " + JSON_STORE);
         } catch (IOException e) {
-            System.out.println(RED + "Error saving data to file: " + e.getMessage());
+            System.out.println("Failed to save data: " + e.getMessage());
         }
     }
 
     // EFFECTS: clears current data by writing empty JSON to the file
-    private static void clearData() {
-        try (FileWriter fileWriter = new FileWriter(JSON_STORE)) {
-            fileWriter.write(EMPTY_DATA_JSON);
-            System.out.println("\nAll Data Cleared " + JSON_STORE);
+    public void clearData() {
+        // Clear in-memory data
+        hashes.clear();
+        hashdexes.clear();
+        outfits.clear();
+        System.out.println("In-memory data cleared.");
+    
+        try {
+            // Overwrite the file with empty data (or clear the file entirely)
+            JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+            jsonWriter.open();
+            jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            jsonWriter.close();
+            System.out.println("Data file cleared.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to clear data file: " + e.getMessage());
         }
-
     }
 
+
+    //----------------------- HASH METHODS --------------------------
     /*
      * EFFECTS: creates a hash (clothing item) with given name, colour, material,
      * types from user
@@ -215,6 +249,8 @@ public class Menu {
         handleMenuSelection(input);
     }
 
+    //----------------------- HASHDEX METHODS --------------------------
+
     /*
      * REQUIRES: name and colour to have a non-zero length
      * EFFECTS: creates a closet (hashdex) with the desired features which are set
@@ -248,6 +284,7 @@ public class Menu {
      * initaliizes tags as an empty arrayList and sets liked to false
      */
     private void addToHashdex() {
+        scanner.nextLine(); // consumes extra sinputs
         String hashName = getInput("Enter Hash Name: ");
         Hash verifiedHash = findHashByName(hashName);
 
@@ -293,6 +330,7 @@ public class Menu {
         return null;
     }
 
+    //----------------------- OUTFIT METHODS --------------------------
     /*
      * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name

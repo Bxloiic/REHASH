@@ -18,7 +18,7 @@ public class Main {
         System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
         System.out.println(" \nIt’s also for those who want to build collections");
         System.out.print("as share their personal styles to others who can appreciate their creation.");
-        System.out.println("\n--------------------------------\n");
+        System.out.println("\n------------------------------------------------------------------------");
 
         // Calls user ui class
         Menu m = new Menu();

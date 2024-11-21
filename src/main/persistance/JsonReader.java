@@ -49,11 +49,11 @@ public class JsonReader {
         data.put("hashes", hashes);
 
         // Parse hashdexes
-        List<Hashdex> hashdexes = parseHashdexes(jsonObject.getJSONArray("hashdexes"));
+        List<Hashdex> hashdexes = parseHashdexes(jsonObject.getJSONArray("hashdexes"), hashes);
         data.put("hashdexes", hashdexes);
 
         // Parse outfits
-        List<Outfit> outfits = parseOutfits(jsonObject.getJSONArray("outfits"));
+        List<Outfit> outfits = parseOutfits(jsonObject.getJSONArray("outfits"), hashes);
         data.put("outfits", outfits);
 
         return data;
@@ -75,27 +75,60 @@ public class JsonReader {
     }
 
     // EFFECTS: parses a list of hashdexes from JSON array and returns it
-    private List<Hashdex> parseHashdexes(JSONArray jsonArray) {
+    private List<Hashdex> parseHashdexes(JSONArray jsonArray, List<Hash> hashes) {
         List<Hashdex> hashdexes = new ArrayList<>();
-        for (Object json : jsonArray) { //cycles json objects in the array
-            JSONObject nextHashdex = (JSONObject) json; // get hashdex in JSON format
-            String name = nextHashdex.getString("name"); // get name of hashdex
-            String color = nextHashdex.getString("colour"); // get colour of hashdex
-            Hashdex hashdex = new Hashdex(name, color); // creates new Hashdex (with the same info)
-            hashdexes.add(hashdex); //adds corresponding hashes into hashdex
+        for (Object json : jsonArray) {
+            JSONObject nextHashdex = (JSONObject) json;
+            String name = nextHashdex.getString("name");
+            String color = nextHashdex.getString("colour");
+            Hashdex hashdex = new Hashdex(name, color);
+
+            // Parse and link hashes within this hashdex
+            JSONArray hashArray = nextHashdex.getJSONArray("hashes");
+            for (Object hashJson : hashArray) {
+                JSONObject hashObject = (JSONObject) hashJson;
+                Hash hash = findHashByName(hashes, hashObject.getString("name"));
+                if (hash != null) {
+                    hashdex.addHash(hash);
+                }
+            }
+
+            hashdexes.add(hashdex);
         }
         return hashdexes;
     }
 
     // EFFECTS: parses a list of outfits from JSON array and returns it
-    private List<Outfit> parseOutfits(JSONArray jsonArray) {
+    private List<Outfit> parseOutfits(JSONArray jsonArray, List<Hash> hashes) {
         List<Outfit> outfits = new ArrayList<>();
-        for (Object json : jsonArray) { //cycles json objects in the array
-            JSONObject nextOutfit = (JSONObject) json; // get outfit in JSON format
-            String name = nextOutfit.getString("name"); // get name of outfit
-            Outfit outfit = new Outfit(name); // creates new outfit object (with same info)
-            outfits.add(outfit); //adds corresponding outfit into outfits
+        for (Object json : jsonArray) {
+            JSONObject nextOutfit = (JSONObject) json;
+            String name = nextOutfit.getString("name");
+            Outfit outfit = new Outfit(name);
+
+            // Parse and link hashes within this outfit
+            JSONArray hashArray = nextOutfit.getJSONArray("hashes");
+            for (Object hashJson : hashArray) {
+                JSONObject hashObject = (JSONObject) hashJson;
+                Hash hash = findHashByName(hashes, hashObject.getString("name"));
+                if (hash != null) {
+                    outfit.addHash(hash);
+                }
+            }
+
+            outfits.add(outfit);
         }
         return outfits;
     }
+
+    // EFFECTS: finds a hash by its name in the list of hashes, or returns null if not found
+    private Hash findHashByName(List<Hash> hashes, String name) {
+        for (Hash hash : hashes) {
+            if (hash.getName().equals(name)) {
+                return hash;
+            }
+        }
+        return null;
+    }
+
 }
