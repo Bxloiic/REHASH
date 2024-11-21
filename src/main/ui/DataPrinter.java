@@ -1,12 +1,13 @@
 package main.ui;
 
-import main.ui.*;
+
 import main.model.*;
 import java.util.List;
 import java.util.Map;
 
 public class DataPrinter {
     // EFFECTS: prints the loaded data to the console
+    @SuppressWarnings("methodlength")
     public static void printLoadedData(Map<String, Object> data) {
         System.out.println("=== Loaded Data ===");
 

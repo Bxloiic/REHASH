@@ -5,7 +5,7 @@ import main.model.*;
 import main.persistance.JsonReader;
 import main.persistance.JsonWriter;
 
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class Menu {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
 
-    // Attributes
+    // FIELDS
     private Scanner scanner;
     private Week week;
     private Hashdex hashdex;
@@ -94,7 +94,9 @@ public class Menu {
     /*
      * EFFECTS: handles user input for appilciation menu
      */
+    @SuppressWarnings("methodlength")
     private void handleMenuSelection(int input) {
+        
         switch (input) {
             case 1:
                 createHash();
@@ -426,6 +428,7 @@ public class Menu {
         }
     }
 
+    //----------------------- DISPLAY METHODS --------------------------
     /*
      * EFFECTS: displays the week with each days corresponding outfit
      */
