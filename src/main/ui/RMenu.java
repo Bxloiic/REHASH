@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 //represents the menu screens options the user can use
-public class Menu {
+public class RMenu {
 
     // ANSI escape codes for text colors
     public static final String RESET = "\u001B[0m";
@@ -29,6 +29,7 @@ public class Menu {
     private List<Hashdex> hashdexes;
     private List<Outfit> outfits;
     private boolean valid = true;
+    protected boolean saved = false;
     private Map<String, Object> data;
     private int input;
     private JsonReader jsonReader;
@@ -43,13 +44,11 @@ public class Menu {
      * EFFECTS: initializes scanner, week. hashdex, hashes, and hashdexes are
      * initialized to an empty list
      */
-    Menu() {
+    public RMenu() {
         scanner = new Scanner(System.in); // takes user input from terminal
         week = new Week();
-        hashdex = new Hashdex("Default Closet", "Neutral"); // there's a default hashdex until it's edited or removed
         hashes = new ArrayList<>(); // Initialize the list to store created hashes
         hashdexes = new ArrayList<>(); // Initialize the list to store created hashdexs
-        hashdexes.add(hashdex);
         outfits = new ArrayList<>();
 
         jsonReader = new JsonReader(JSON_STORE);
@@ -60,7 +59,18 @@ public class Menu {
 
     }
 
-    // Constructor
+    public List<Hash> getHashes() {
+        return hashes;
+    }
+
+    public List<Hashdex> getHashdexes() {
+        return hashdexes;
+    }
+
+    public List<Outfit> getOutfits() {
+        return outfits;
+    }
+
     /*
      * EFFECTS: draws menu options
      */
@@ -95,7 +105,7 @@ public class Menu {
      * EFFECTS: handles user input for appilciation menu
      */
     @SuppressWarnings("methodlength")
-    private void handleMenuSelection(int input) {
+    public void handleMenuSelection(int input) {
         
         switch (input) {
             case 1:
@@ -161,7 +171,7 @@ public class Menu {
 
     // MODIFIES: this
     // EFFECTS: loads hashes, hashdex, and outfits from file
-    private void loadData() {
+    public void loadData() {
         try {
             // Load the data into a map
             data = jsonReader.read();
@@ -170,6 +180,7 @@ public class Menu {
             hashes = (List<Hash>) data.get("hashes");
             hashdexes = (List<Hashdex>) data.get("hashdexes");
             outfits = (List<Outfit>) data.get("outfits");
+            System.out.println("Data successfully loaded from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Failed to load data: " + e.getMessage());
         }
@@ -194,6 +205,7 @@ public class Menu {
     // EFFECTS: clears current data by writing empty JSON to the file
     public void clearData() {
         // Clear in-memory data
+        saved = false;
         hashes.clear();
         hashdexes.clear();
         outfits.clear();
@@ -218,7 +230,7 @@ public class Menu {
      * types from user
      * initaliizes tags as an empty arrayList and sets liked to false
      */
-    private void createHash() {
+    public void createHash() {
         scanner.nextLine(); // consums extra inputs
         System.out.println(RED + "\nCreating new hash...");
 
@@ -259,7 +271,7 @@ public class Menu {
      * as it's attributes
      * parameter are set to their correlating attribute
      */
-    private void createHashdex() {
+    public void createHashdex() {
         System.out.println(RED + "\nCreating new hashdex...");
 
         System.out.println(GREEN + "To create a new Hashdex, please answer the questions below: ");
@@ -332,13 +344,25 @@ public class Menu {
         return null;
     }
 
+        /**
+     * EFFECTS: Searches for a hashdex by name. Returns null if not found.
+     */
+    private Outfit findOutfitByName(String outfitName) {
+        for (Outfit o: outfits) {
+            if (o.getName().equalsIgnoreCase(outfitName)) {
+                return o;
+            }
+        }
+        return null;
+    }
+
     //----------------------- OUTFIT METHODS --------------------------
     /*
      * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name
      * initaliizes items as an empty arrayList
      */
-    private void createOutfit() {
+    public void createOutfit() {
         scanner.nextLine(); // consumes any excess inputs
 
         System.out.println(RED + "\ncreating an outfit...");
@@ -352,17 +376,6 @@ public class Menu {
 
         Outfit of = new Outfit(outfitName);
 
-        // Let the user choose a hash to add to the outfit
-        System.out.println("Select a hash (enter hash name):");
-        String name = scanner.nextLine();
-
-        for (Hash h : hashes) { // cycles through created hashes
-            if (h.getName().equals(name)) {
-                if (!of.getOutfitHashs().contains(h)) {
-                    of.addHash(h);
-                }
-            }
-        }
 
         outfits.add(of); // adds outfit to created outfit list
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
@@ -403,6 +416,34 @@ public class Menu {
         input = scanner.nextInt();
         scanner.nextLine(); // ensures it doesn't read future inputs wrong
         handleMenuSelection(input);
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: adds a created hash to a outfit if not already there
+     * initaliizes tags as an empty arrayList and sets liked to false
+     */
+    private void addToOutfit() {
+        scanner.nextLine(); // consumes extra sinputs
+        String hashName = getInput("Enter Hash Name: ");
+        Hash verifiedHash = findHashByName(hashName);
+
+        if (verifiedHash == null) {
+            System.out.println("\nHash not found.");
+            return;
+        }
+
+        String outfitName = getInput("Enter Outfit Name: ");
+        Outfit verOutfit = findOutfitByName(outfitName);
+
+        if (verOutfit == null) {
+            System.out.println("\nOutfit not found.");
+            return;
+        }
+
+        verOutfit.addHash(verifiedHash);
+        System.out.println(YELLOW + "\nHash has been added to your Outfit!!!");
+        hashFollowUpAction();
     }
 
     /*

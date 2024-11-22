@@ -1,5 +1,8 @@
 package main.ui;
 
+import main.ui.gui.MainScreen;
+import main.ui.gui.RehashScreen;
+
 //runs the application
 public class Main {
     // ANSI escape codes for text colors
@@ -20,9 +23,11 @@ public class Main {
         System.out.print("as share their personal styles to others who can appreciate their creation.");
         System.out.println("\n------------------------------------------------------------------------");
 
-        // Calls user ui class
-        Menu m = new Menu();
-        m.run();
+        // Launch the GUI
+        // Create an instance of MainScreen (the GUI class)
+        RehashScreen rehashScreen = new RehashScreen();
+        //mainScreen.setVisible(true);  // Show the window
+
 
     }
 

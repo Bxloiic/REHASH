@@ -136,15 +136,6 @@ public class Hash {
         this.tags.remove(str); // removed ibject at specified index
     }
 
-    /*
-     * EFFECTS: returns the details of the Hash as a formatted string
-     */
-    @Override
-    public String toString() {
-        String tostring = "Item: " + name + " (" + type + "), Color: "
-                + colour + ", Material: " + material + ", Liked: " + liked + ", Tags: " + tags;
-        return tostring;
-    }
 
 
 

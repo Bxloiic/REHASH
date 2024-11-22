@@ -48,16 +48,6 @@ public class Outfit {
         outfitHashs.add(hash);
     }
 
-    /*
-     * EFFECTS: displays the hashs that make the outfitHash list
-     */
-    @Override
-    public String toString() {
-        if (outfitHashs.isEmpty()) { // if list is empty
-            return "No items have been assigned to outfit!";
-        } else {
-            return "Outfit: " + name + "\n - Items: " + outfitHashs.toString();
-        }
-    }
+
 
 }
