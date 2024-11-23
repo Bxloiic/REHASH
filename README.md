@@ -29,11 +29,9 @@ It’s an essential aspect of life as others always get a first impression from 
 - Save and organize outfits into a weekly calender
 
 # Instructions for End User
-- You can enter the REHASH application by clicking the start button in the "WELCOME" screen
-- You can generate a hash, a hashdex, or a outfit by clicking the buttons with the corresponding labels in the blue panel
-- You can locate my visual component by looking at the welcome screen
-- You can save the state of my application by clicking save in the REHASH application
-- You can load or clear data by licking the continue button in the welcome screen
+- You can generate a hash, a hashdex, or a outfit by clicking the buttons with the corresponding labels 
+- You can add hashes to outfits or hashdexes, with their corresponding button
+- You can save, load, or clear the state of my application by clicking save in the REHASH application
 - You can view created hashes..etc, by click the view button in the tabs
 
 ### FAQ
