@@ -55,7 +55,7 @@ public class RMenu {
         jsonWriter = new JsonWriter(JSON_STORE);
         dataPrinter = new DataPrinter();
 
-        loadData(); // Load data at the start
+        //loadData(); // Load data at the start
 
     }
 

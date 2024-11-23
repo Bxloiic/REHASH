@@ -1,7 +1,7 @@
 package main.ui;
 
 import main.ui.gui.MainScreen;
-import main.ui.gui.RehashScreen;
+import main.ui.gui.RehashGUI;
 
 //runs the application
 public class Main {
@@ -25,8 +25,8 @@ public class Main {
 
         // Launch the GUI
         // Create an instance of MainScreen (the GUI class)
-        RehashScreen rehashScreen = new RehashScreen();
-        //mainScreen.setVisible(true);  // Show the window
+        RehashGUI hashGui = new RehashGUI();
+
 
 
     }
