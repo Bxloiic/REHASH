@@ -5,8 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import main.model.*;
+import main.persistance.JsonWriter;
+
 import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,6 +23,20 @@ public class RehashGUI {
     private HashMap<String, Outfit> outfits; // Store outfits by name
     private Week week;
 
+    // -------- button fields --------
+    private JButton createHashButton;
+    private JButton createHashdexButton;
+    private JButton viewHashesButton;
+    private JButton viewHashdexesButton;
+    private JButton createOutfitButton;
+    private JButton addHashToOutfitButton;
+    private JButton addHashToHashdexButton;
+    private JButton viewOutfitsButton;
+    private JButton saveDataButton;
+    private JButton loadDataButton;
+    private JButton clearDataButton;
+    private JButton exitButton;
+
     @SuppressWarnings("methodlength")
     public RehashGUI() {
         // Initialize collections to store data
@@ -28,26 +45,42 @@ public class RehashGUI {
         outfits = new HashMap<>();
         week = new Week();
 
-        frame = new JFrame("Rehash GUI");
+        frame = new JFrame("REHASH");
         panel = new JPanel();
+        panel.setBackground(Color.decode("#edeec9"));
+
+
         textArea = new JTextArea(20, 40);
         textArea.setEditable(false); // User should not edit this
-
+        textArea.setBackground(Color.decode("#dde7c7"));
+        textArea.setBorder(BorderFactory.createLineBorder(Color.decode("#bfd8bd"), 2));
+        textArea.setFont(new Font("Serif", Font.PLAIN, 15));
         panel.add(new JScrollPane(textArea)); // Add text area with scroll
 
+        createButtons();
+        buttonListeners();
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(panel);
+        frame.setSize(600, 600);
+        frame.setVisible(true);
+    }
+
+    @SuppressWarnings("methodlength")
+    private void createButtons() {
         // Buttons to interact with the program
-        JButton createHashButton = new JButton("Create a Hash");
-        JButton createHashdexButton = new JButton("Create a Hashdex");
-        JButton viewHashesButton = new JButton("View Hashes");
-        JButton viewHashdexesButton = new JButton("View Hashdexes");
-        JButton createOutfitButton = new JButton("Create an Outfit");
-        JButton addHashToOutfitButton = new JButton("Add Hash to Outfit");
-        JButton addHashToHashdexButton = new JButton("Add Hash to Hashdex");
-        JButton viewOutfitsButton = new JButton("View Outfits");
-        JButton saveDataButton = new JButton("Save Data");
-        JButton loadDataButton = new JButton("Load Data");
-        JButton clearDataButton = new JButton("Clear Data");
-        JButton exitButton = new JButton("Exit");
+        createHashButton = new JButton("Create a Hash");
+        createHashdexButton = new JButton("Create a Hashdex");
+        viewHashesButton = new JButton("View Hashes");
+        viewHashdexesButton = new JButton("View Hashdexes");
+        createOutfitButton = new JButton("Create an Outfit");
+        addHashToOutfitButton = new JButton("Add Hash to Outfit");
+        addHashToHashdexButton = new JButton("Add Hash to Hashdex");
+        viewOutfitsButton = new JButton("View Outfits");
+        saveDataButton = new JButton("Save Data");
+        loadDataButton = new JButton("Load Data");
+        clearDataButton = new JButton("Clear Data");
+        exitButton = new JButton("Exit");
 
         // Add buttons to panel
         panel.add(createHashButton);
@@ -62,7 +95,9 @@ public class RehashGUI {
         panel.add(loadDataButton);
         panel.add(clearDataButton);
         panel.add(exitButton);
+    }
 
+    private void buttonListeners() {
         // Action listeners for each button
         createHashButton.addActionListener(e -> createHash());
         createHashdexButton.addActionListener(e -> createHashdex());
@@ -76,26 +111,50 @@ public class RehashGUI {
         loadDataButton.addActionListener(e -> loadData());
         clearDataButton.addActionListener(e -> clearData());
         exitButton.addActionListener(e -> exitApplication());
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(panel);
-        frame.setSize(600, 600);
-        frame.setVisible(true);
     }
 
-    // Create a Hash
+    // ----------------------- HASH METHODS --------------------------
+    /*
+     * EFFECTS: creates a hash (clothing item) with given name, colour, material,
+     * types from user
+     */
     private void createHash() {
         String name = JOptionPane.showInputDialog(frame, "Enter the name of the item:");
-        String type = JOptionPane.showInputDialog(frame, "Enter the type of the item:");
-        String colour = JOptionPane.showInputDialog(frame, "Enter the colour of the item:");
-        String material = JOptionPane.showInputDialog(frame, "Enter the material of the item:");
+        String type = JOptionPane.showInputDialog(frame, "Enter the type of the " + name + ":");
+        String colour = JOptionPane.showInputDialog(frame, "Enter the colour of " + name + ":");
+        String material = JOptionPane.showInputDialog(frame, "Enter the material of " + name + ":");
 
         Hash hash = new Hash(name, type, colour, material);
         hashes.put(name, hash);
         textArea.append("Created Hash: " + hash.getName() + "\n");
     }
 
-    // Create a Hashdex
+    /*
+     * EFFECTS: displays made hashes
+     */
+    private void viewHashes() {
+        if (hashes.isEmpty()) {
+            textArea.append("No Hashes available.\n");
+            return;
+        }
+    
+        textArea.append("===== Displaying All Hashes =====\n");
+        for (Hash hash : hashes.values()) {
+            textArea.append("Hash Name: " + hash.getName() + "\n");
+            textArea.append("  Type: " + hash.getType() + "\n");
+            textArea.append("  Colour: " + hash.getColour() + "\n");
+            textArea.append("  Material: " + hash.getMaterial() + "\n");
+            textArea.append("-----------------------------------\n");
+        }
+    }
+
+    // ----------------------- HASHDEX METHODS --------------------------
+    /*
+     * REQUIRES: name and colour to have a non-zero length
+     * EFFECTS: creates a closet (hashdex) with the desired features which are set
+     * as it's attributes
+     * parameter are set to their correlating attribute
+     */
     private void createHashdex() {
         String name = JOptionPane.showInputDialog(frame, "Enter the name of the Hashdex:");
         String colour = JOptionPane.showInputDialog(frame, "Enter the colour of the Hashdex:");
@@ -105,50 +164,39 @@ public class RehashGUI {
         textArea.append("Created Hashdex: " + hashdex.getName() + "\n");
     }
 
-    // View all Hashes
-
-    private void viewHashes() {
-        textArea.append("Displaying all hashes:\n");
-
-        for (Hash hash : hashes.values()) {
-            textArea.append("Hash: " + hash.getName() + ", Type: "
-                    + hash.getType() + ", Colour: " + hash.getColour() + "\n");
-        }
-    }
-
-    // View all Hashdexes
+    /*
+     * EFFECTS: displays hashdex name and it's hashes
+     */
     private void viewHashdexes() {
-        textArea.append("Displaying all hashdexes:\n");
+        if (hashdexes.isEmpty()) {
+            textArea.append("No Hashdexes available.\n");
+            return;
+        }
+
+        textArea.append("===== Displaying All Hashdexes =====\n");
         for (Hashdex hashdex : hashdexes.values()) {
-            textArea.append("Hashdex: " + hashdex.getName() + ", Colour: " + hashdex.getColour() + "\n");
+            textArea.append("Hashdex Name: " + hashdex.getName() + "\n");
+            textArea.append("  Colour: " + hashdex.getColour() + "\n");
+            textArea.append("  Contained Hashes:\n");
+
+            if (hashdex.getHashList().isEmpty()) {
+                textArea.append("    (No hashes added to this hashdex)\n");
+            } else {
+                for (Hash hash : hashdex.getHashList()) {
+                    textArea.append("    - " + hash.getName() + " (" + hash.getType() + ", "
+                            + hash.getColour() + ")\n");
+                }
+            }
+
+            textArea.append("-----------------------------------\n");
         }
     }
 
-    // Create an Outfit
-    private void createOutfit() {
-        String name = JOptionPane.showInputDialog(frame, "Enter the name of the outfit:");
-        Outfit outfit = new Outfit(name);
-        outfits.put(name, outfit);
-        textArea.append("Created Outfit: " + outfit.getName() + "\n");
-    }
-
-    // Add Hash to Outfit
-    private void addHashToOutfit() {
-        String outfitName = JOptionPane.showInputDialog(frame, "Enter the name of the outfit to add the hash to:");
-        String hashName = JOptionPane.showInputDialog(frame, "Enter the name of the hash to add:");
-
-        Outfit outfit = outfits.get(outfitName);
-        Hash hash = hashes.get(hashName);
-
-        if (outfit != null && hash != null) {
-            outfit.addHash(hash);
-            textArea.append("Added Hash: " + hash.getName() + " to Outfit: " + outfit.getName() + "\n");
-        } else {
-            textArea.append("Invalid Outfit or Hash name\n");
-        }
-    }
-
-    // Add Hash to Hashdex
+    /*
+     * MODIFIES: this, hashdex
+     * EFFECTS: adds a created hash to a hashdex if not already there
+     * initaliizes tags as an empty arrayList and sets liked to false
+     */
     private void addHashToHashdex() {
         String hashName = JOptionPane.showInputDialog(frame, "Enter the name of the Hash:");
         String hashdexName = JOptionPane.showInputDialog(frame, "Enter the name of the Hashdex:");
@@ -157,23 +205,72 @@ public class RehashGUI {
         Hashdex hashdex = hashdexes.get(hashdexName);
         if (hash != null && hashdex != null) {
             hashdex.addHash(hash);
-            textArea.append("Added Hash: " + hash.getName() + " to Hashdex: " + hashdex.getName() + "\n");
+            textArea.append("Add Hash: " + hash.getName() + " to Hashdex: " + hashdex.getName() + "\n");
         } else {
             textArea.append("Invalid Hash or Hashdex name\n");
         }
     }
 
-    // View all Outfits
-    private void viewOutfits() {
-        textArea.append("Displaying all outfits:\n");
-        for (Outfit outfit : outfits.values()) {
-            textArea.append("Outfit: " + outfit.getName() + "\n");
-            for (Hash hash : outfit.getOutfitHashs()) {
-                textArea.append("  - " + hash.getName() + "\n");
-            }
+    // ----------------------- OUTFIT METHODS --------------------------
+    /*
+     * REQUIRES: non-zero length
+     * EFFECTS: creates a outfit with a given name
+     */
+    private void createOutfit() {
+        String name = JOptionPane.showInputDialog(frame, "Enter the name of the outfit:");
+        Outfit outfit = new Outfit(name);
+        outfits.put(name, outfit);
+        textArea.append("Created Outfit: " + outfit.getName() + "\n");
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: adds a created hash to a outfit if not already there
+     */
+    private void addHashToOutfit() {
+        String hashName = JOptionPane.showInputDialog(frame, "Enter the name of the hash:");
+        String outfitName = JOptionPane.showInputDialog(frame, "Enter the name of the outfit to add to:");
+
+        Outfit outfit = outfits.get(outfitName);
+        Hash hash = hashes.get(hashName);
+
+        if (outfit != null && hash != null) {
+            outfit.addHash(hash);
+            textArea.append("Add Hash: " + hash.getName() + " to Outfit: " + outfit.getName() + "\n");
+        } else {
+            textArea.append("Invalid Outfit or Hash name\n");
         }
     }
 
+    /*
+     * EFFECTS: displays the created outfits
+     */
+    private void viewOutfits() {
+        if (outfits.isEmpty()) {
+            textArea.append("No Outfits available.\n");
+            return;
+        }
+
+        textArea.append("===== Displaying All Outfits =====\n");
+        for (Outfit outfit : outfits.values()) {
+            textArea.append("Outfit Name: " + outfit.getName() + "\n");
+            textArea.append("  Contained Hashes:\n");
+
+            if (outfit.getOutfitHashs().isEmpty()) {
+                textArea.append("    (No hashes added to this outfit)\n");
+            } else {
+                for (Hash hash : outfit.getOutfitHashs()) {
+                    textArea.append("    - " + hash.getName() + " (" + hash.getType() + ", "
+                            + hash.getColour() + ")\n");
+                }
+            }
+
+            textArea.append("-----------------------------------\n");
+        }
+    }
+
+    // ----------------------- JSON DATA METHODS --------------------------
+    // EFFECTS: saves hashes, hashdex, and outfits to file
     @SuppressWarnings("methodlength")
     private void saveData() {
         try {
@@ -229,6 +326,8 @@ public class RehashGUI {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads hashes, hashdex, and outfits from file
     @SuppressWarnings("methodlength")
     private void loadData() {
         try {
@@ -292,16 +391,26 @@ public class RehashGUI {
         }
     }
 
-    // Clear Data
+    // EFFECTS: clears current data by writing empty JSON to the file
     private void clearData() {
         hashes.clear();
         hashdexes.clear();
         outfits.clear(); // Clear all outfits
         week = new Week(); // Reset the week
         textArea.append("All data has been cleared.\n");
+        try {
+            // Overwrite the file with empty data (or clear the file entirely)
+            JsonWriter jsonWriter = new JsonWriter("./data/Rehash.json");
+            jsonWriter.open();
+            jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            jsonWriter.close();
+            System.out.println("Data file cleared.");
+        } catch (IOException e) {
+            System.out.println("Failed to clear data file: " + e.getMessage());
+        }
     }
 
-    // Exit Application
+    // EFFECTS: exits program, AsK IF USER IS SURE, allows them to save or not
     private void exitApplication() {
         int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?",
                 "Exit", JOptionPane.YES_NO_OPTION);

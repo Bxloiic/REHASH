@@ -1,6 +1,6 @@
 package main.ui;
 
-import main.ui.gui.MainScreen;
+import main.ui.gui.WelcomePage;
 import main.ui.gui.RehashGUI;
 
 //runs the application
@@ -16,18 +16,23 @@ public class Main {
 
     public static void main(String[] args) {
         // Welcome message
-        System.out.println(GREEN + "\nWelcome user to REHASH!");
-        System.out.println("REHASH is designed for anyone who seeks inspiration for outfits,");
-        System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
-        System.out.println(" \nIt’s also for those who want to build collections");
-        System.out.print("as share their personal styles to others who can appreciate their creation.");
-        System.out.println("\n------------------------------------------------------------------------");
+        // System.out.println(GREEN + "\nWelcome user to REHASH!");
+        // System.out.println("REHASH is designed for anyone who seeks inspiration for outfits,");
+        // System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
+        // System.out.println(" \nIt’s also for those who want to build collections");
+        // System.out.print("as share their personal styles to others who can appreciate their creation.");
+        // System.out.println("\n------------------------------------------------------------------------");
 
+        //RMenu menu = new RMenu();
+        
+        guimain(args);
+
+    }
+
+    public static void guimain(String[] args) {
         // Launch the GUI
         // Create an instance of MainScreen (the GUI class)
-        RehashGUI hashGui = new RehashGUI();
-
-
+        new WelcomePage();
 
     }
 

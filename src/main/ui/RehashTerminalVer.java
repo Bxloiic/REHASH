@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 //represents the menu screens options the user can use
-public class RMenu {
+public class RehashTerminalVer {
 
     // ANSI escape codes for text colors
     public static final String RESET = "\u001B[0m";
@@ -44,7 +44,7 @@ public class RMenu {
      * EFFECTS: initializes scanner, week. hashdex, hashes, and hashdexes are
      * initialized to an empty list
      */
-    public RMenu() {
+    public RehashTerminalVer() {
         scanner = new Scanner(System.in); // takes user input from terminal
         week = new Week();
         hashes = new ArrayList<>(); // Initialize the list to store created hashes
@@ -56,7 +56,6 @@ public class RMenu {
         dataPrinter = new DataPrinter();
 
         //loadData(); // Load data at the start
-
     }
 
     public List<Hash> getHashes() {

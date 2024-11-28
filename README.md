@@ -28,7 +28,7 @@ It’s an essential aspect of life as others always get a first impression from 
 - Generate new outfits based on your ***personal style***
 - Save and organize outfits into a weekly calender
 
-# Instructions for End User
+### Instructions for End User:
 - You can generate a hash, a hashdex, or a outfit by clicking the buttons with the corresponding labels 
 - You can add hashes to outfits or hashdexes, with their corresponding button
 - You can save, load, or clear the state of my application by clicking save in the REHASH application
