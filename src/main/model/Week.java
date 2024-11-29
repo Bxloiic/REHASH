@@ -3,6 +3,9 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
+import main.ui.Event;
+import main.ui.EventLog;
+
 // Calendar which stores an outfits/day of the week
 public class Week {
     // Attributes
@@ -34,6 +37,7 @@ public class Week {
      */
     public void addOutfit(String day, Outfit outfit) {
         outfits.put(day, outfit);
+        EventLog.getInstance().logEvent(new Event("Added Outfit: " + outfit.getName() + " to Day: " + day));
     }
 
     /*
@@ -43,7 +47,7 @@ public class Week {
      */
     public void removeOutfit(String day) {
         outfits.remove(day); // Remove the day and it's associated outfit
+        EventLog.getInstance().logEvent(new Event("Removed Outfit from Day: " + day));
     }
-
 
 }

@@ -9,12 +9,14 @@ import java.io.IOException;
 
 import main.model.*;
 import main.persistance.JsonWriter;
+import main.ui.EventLog;
+import main.ui.Event;
 
 import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class RehashGUI {
+public class RehashGUI implements WindowListener {
     private JFrame frame;
     private JPanel panel;
     private JTextArea textArea; // for displaying info
@@ -37,7 +39,6 @@ public class RehashGUI {
     private JButton clearDataButton;
     private JButton exitButton;
 
-    
     public RehashGUI() {
         // initialize collections to store data
         hashes = new HashMap<>();
@@ -48,7 +49,6 @@ public class RehashGUI {
         frame = new JFrame("REHASH");
         panel = new JPanel();
         panel.setBackground(Color.decode("#edeec9"));
-
 
         textArea = new JTextArea(20, 40);
         textArea.setEditable(false); // user can't edit textarea
@@ -61,12 +61,12 @@ public class RehashGUI {
         buttonListeners();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(this);
         frame.add(panel);
         frame.setSize(600, 600);
         frame.setVisible(true);
     }
 
-    
     private void createButtons() {
         // Buttons to interact with the program
         createHashButton = new JButton("Create a Hash");
@@ -142,7 +142,7 @@ public class RehashGUI {
             textArea.append("No Hashes available.\n");
             return;
         }
-    
+
         textArea.append("===== Displaying All Hashes =====\n");
         for (Hash hash : hashes.values()) {
             textArea.append("Hash Name: " + hash.getName() + "\n");
@@ -347,20 +347,20 @@ public class RehashGUI {
                 content.append((char) c);
             }
             reader.close();
-    
+
             // Parse the JSON data
             JSONObject data = new JSONObject(content.toString());
-    
+
             // Delegate the loading tasks
             loadHashes(data);
             loadHashdexes(data);
             loadOutfits(data);
-    
+
         } catch (Exception e) {
             textArea.append("Error loading data: " + e.getMessage() + "\n");
         }
     }
-    
+
     // MODIFIES: this
     // EFFECTS: loads outfits from file
     public void loadOutfits(JSONObject data) {
@@ -369,7 +369,7 @@ public class RehashGUI {
             for (int i = 0; i < outfitsArray.length(); i++) {
                 JSONObject outfitObject = outfitsArray.getJSONObject(i);
                 String name = outfitObject.getString("name");
-    
+
                 Outfit outfit = new Outfit(name);
                 JSONArray outfitHashesArray = outfitObject.getJSONArray("hashes");
                 for (int j = 0; j < outfitHashesArray.length(); j++) {
@@ -381,7 +381,7 @@ public class RehashGUI {
                 }
                 outfits.put(name, outfit);
             }
-    
+
             textArea.append("Outfits loaded successfully.\n");
         } catch (Exception e) {
             textArea.append("Error loading outfits: " + e.getMessage() + "\n");
@@ -399,7 +399,7 @@ public class RehashGUI {
                 String type = hashObject.getString("type");
                 String colour = hashObject.getString("colour");
                 String material = hashObject.getString("material");
-    
+
                 Hash hash = new Hash(name, type, colour, material);
                 hashes.put(name, hash);
             }
@@ -408,7 +408,7 @@ public class RehashGUI {
             textArea.append("Error loading hashes: " + e.getMessage() + "\n");
         }
     }
-    
+
     // MODIFIES: this
     // EFFECTS: loads hashdex from file
     private void loadHashdexes(JSONObject data) {
@@ -418,7 +418,7 @@ public class RehashGUI {
                 JSONObject hashdexObject = hashdexesArray.getJSONObject(i);
                 String name = hashdexObject.getString("name");
                 String colour = hashdexObject.getString("colour");
-    
+
                 Hashdex hashdex = new Hashdex(name, colour);
                 JSONArray hashdexHashesArray = hashdexObject.getJSONArray("hashes");
                 for (int j = 0; j < hashdexHashesArray.length(); j++) {
@@ -435,17 +435,16 @@ public class RehashGUI {
             textArea.append("Error loading hashdexes: " + e.getMessage() + "\n");
         }
     }
-    
 
     // EFFECTS: clears current data by writing empty JSON to the file
     private void clearData() {
         hashes.clear();
         hashdexes.clear();
-        outfits.clear(); 
-        week = new Week(); 
+        outfits.clear();
+        week = new Week();
         textArea.append("All data has been cleared.\n");
         try {
-            // overrides the file with empty data 
+            // overrides the file with empty data
             JsonWriter jsonWriter = new JsonWriter("./data/Rehash.json");
             jsonWriter.open();
             jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -463,6 +462,58 @@ public class RehashGUI {
         if (confirm == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
+    }
+
+    // ----------------------- EVENT METHODS --------------------------
+    // EFFECTS: iterates through each event in the eventlog
+    public void printAllEvents() {
+        // iterates through each event in the EventLog
+        for (Event event : EventLog.getInstance()) {
+            System.out.println(event.toString()); // Print the event details
+        }
+    }
+
+    // EFFECTS: displays all the events that occured then quits the application
+    @Override
+    public void windowClosing(WindowEvent e) {
+        printAllEvents();
+        System.exit(0);
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        displayMessage("WindowListener method called: windowActivated.");
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        displayMessage("WindowListener method called: windowDeactivated.");
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        displayMessage("WindowListener method called: windowOpened.");
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        displayMessage("WindowListener method called: windowClosed");
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        displayMessage("WindowListener method called: windowIconified.");
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        displayMessage("WindowListener method called: windowDeiconified.");
+    }
+
+    void displayMessage(String msg) {
+        textArea.append(msg + "\n");
     }
 
 }

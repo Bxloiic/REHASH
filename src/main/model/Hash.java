@@ -3,6 +3,9 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
+import main.ui.Event;
+import main.ui.EventLog;
+
 //the objects that will be added to closet
 public class Hash {
 
@@ -27,6 +30,7 @@ public class Hash {
         this.material = material;
         this.liked = false;
         this.tags = new ArrayList<>();
+
     }
 
     // ---------SETTERS---------
@@ -86,6 +90,7 @@ public class Hash {
      */
     public boolean likedHash() {
         setLiked(true); // sets liked to true
+        EventLog.getInstance().logEvent(new Event("Hash liked: " + this.name));
         return this.liked;
     }
 
@@ -95,6 +100,7 @@ public class Hash {
      */
     public boolean unlikedHash() {
         setLiked(false); // set liked to false
+        EventLog.getInstance().logEvent(new Event("Hash unliked: " + this.name));
         return this.liked;
     }
 
@@ -105,6 +111,7 @@ public class Hash {
         for (String e : tags) { // iterators over the tags list and prints it's elements
             System.out.println(e);
         }
+        EventLog.getInstance().logEvent(new Event("Displayed tags for hash: " + this.name));
     }
 
     /*
@@ -115,7 +122,7 @@ public class Hash {
         if (!getTags().contains(tags)) {
             this.tags.add(tags); // adds a inputed tag to arraylist
         }
-
+        EventLog.getInstance().logEvent(new Event("Tag added to Hash."));
     }
 
     /*
@@ -124,7 +131,10 @@ public class Hash {
      * EFFECTS: removes most recently added tag
      */
     public void removeTag() {
+        EventLog.getInstance()
+                .logEvent(new Event("Tag : " + this.tags.get(tags.size()-1) + "removed from hash: " + this.name));
         this.tags.remove(tags.size() - 1); // removes the most recently added element
+
     }
 
     /*
@@ -135,8 +145,5 @@ public class Hash {
     public void removeTag(String str) {
         this.tags.remove(str); // removed ibject at specified index
     }
-
-
-
 
 }

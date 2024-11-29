@@ -3,6 +3,9 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
+import main.ui.Event;
+import main.ui.EventLog;
+
 // stores specifed hashes to make an outfit
 public class Outfit {
 
@@ -19,6 +22,7 @@ public class Outfit {
     public Outfit(String name) {
         this.name = name;
         this.outfitHashs = new ArrayList<>();
+    
     }
 
     // ---------GETTERS---------
@@ -46,8 +50,7 @@ public class Outfit {
      */
     public void addHash(Hash hash) {
         outfitHashs.add(hash);
+        EventLog.getInstance().logEvent(new Event("Added Hash: " + hash.getName() + " to Outfit: " + this.name));
     }
-
-
 
 }

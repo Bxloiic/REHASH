@@ -1,5 +1,50 @@
 {
-    "hashdexes": [],
-    "hashes": [],
-    "outfits": []
+    "hashdexes": [
+        {
+            "colour": "Technacolour",
+            "name": "Y2K",
+            "hashes": []
+        },
+        {
+            "colour": "Metallic",
+            "name": "Bayonetta 4",
+            "hashes": ["Netta's"]
+        }
+    ],
+    "hashes": [
+        {
+            "colour": "Red",
+            "material": "Leather",
+            "name": "Zip Pumps",
+            "type": "High-kneeheel boots"
+        },
+        {
+            "colour": "Black, Brown",
+            "material": "Cotton",
+            "name": "CTRL love",
+            "type": "t-shirt"
+        },
+        {
+            "colour": "Gray Silver",
+            "material": "Metal, Silver",
+            "name": "Netta's",
+            "type": "Glasses"
+        },
+        {
+            "colour": "Brown, White",
+            "material": "suede, rubber",
+            "name": "Nike 3000s",
+            "type": "low-rise dunks"
+        }
+    ],
+    "outfits": [
+        {
+            "name": "Jeanne",
+            "hashes": ["Nike 3000s"]
+        },
+        {
+            "name": "Lucas Loverboy Era",
+            "hashes": []
+        }
+    ]
 }

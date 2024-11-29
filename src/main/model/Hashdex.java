@@ -2,6 +2,9 @@ package main.model;
 
 import java.util.*; //imports whole java util library
 
+import main.ui.Event;
+import main.ui.EventLog;
+
 //a virtual closet that can be customized to make a uniquely themed closet
 public class Hashdex {
 
@@ -73,6 +76,7 @@ public class Hashdex {
      */
     public void addHash(Hash e) { // e stands for
         hashList.add(e);
+        EventLog.getInstance().logEvent(new Event("Added Hash: " + e.getName() + " to Hashdex: " + this.name));
     }
 
     /*
@@ -81,6 +85,9 @@ public class Hashdex {
      * EFFECTS: removes the last hash from the hashdex
      */
     public void removeHash() {
+        EventLog.getInstance()
+                .logEvent(new Event(
+                        "Removed Hash from Hashdex: " + this.name));
         hashList.removeLast();
     }
 
@@ -90,6 +97,8 @@ public class Hashdex {
      * EFFECTS: removes a hash at a specific index from the List
      */
     public void removeHash(int index) {
+        EventLog.getInstance()
+                .logEvent(new Event("Removed Hash: " + hashList.get(index) + " from Hashdex: " + this.name));
         hashList.remove(index);
     }
 
@@ -100,9 +109,8 @@ public class Hashdex {
     public void saveHash(Hash hash) {
         if (hash.getLiked()) { // Only add if liked
             hashList.add(hash); // gets hashlist and adds
+            EventLog.getInstance().logEvent(new Event("Saved Hash: " + hash.getName() + " to Hashdex: " + this.name));
         }
     }
-
-
 
 }

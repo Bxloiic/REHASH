@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 //represents the menu screens options the user can use
-public class RehashTerminalVer {
+public class RehashConsole {
 
     // ANSI escape codes for text colors
     public static final String RESET = "\u001B[0m";
@@ -43,7 +43,7 @@ public class RehashTerminalVer {
      * EFFECTS: initializes scanner, week. hashdex, hashes, and hashdexes are
      * initialized to an empty list
      */
-    public RehashTerminalVer() {
+    public RehashConsole() {
         scanner = new Scanner(System.in); // takes user input from terminal
         week = new Week();
         hashes = new ArrayList<>(); // initialize the list to store created hashes
@@ -377,7 +377,6 @@ public class RehashTerminalVer {
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
         outfitFollowUp();
     }
-
 
     // EFFECTS: takes user input once a task is complete
     private void outfitFollowUp() {

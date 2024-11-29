@@ -34,6 +34,13 @@ It’s an essential aspect of life as others always get a first impression from 
 - You can save, load, or clear the state of my application by clicking save in the REHASH application
 - You can view created hashes..etc, by click the view button in the tabs
 
+### Phase 4: Task 2:
+    Fri Nov 29 03:49:37 PST 2024
+    Added Hash: Netta's to Hashdex: Bayonetta 4
+    Fri Nov 29 03:49:55 PST 2024
+    Added Hash: Nike 3000s to Outfit: Jeanne
+
+
 ### FAQ
 
 The name REHASH is a play on the concept of reusing items and previous *hashes* create something new. Through the curation of personal hashdex's, users can give old media and ideas new life.
