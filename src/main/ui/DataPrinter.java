@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class DataPrinter {
+
     // EFFECTS: prints the loaded data to the console
-    @SuppressWarnings("methodlength")
     public static void printLoadedData(Map<String, Object> data) {
         System.out.println("=== Loaded Data ===");
 
-        // Print hashes
+        // print hashes
         List<Hash> hashes = (List<Hash>) data.get("hashes");
         System.out.println("Hashes:");
         for (Hash hash : hashes) {
@@ -19,7 +19,7 @@ public class DataPrinter {
                     hash.getName(), hash.getType(), hash.getColour(), hash.getMaterial());
         }
 
-        // Print hashdexes
+        // prints hashdexes
         List<Hashdex> hashdexes = (List<Hashdex>) data.get("hashdexes");
         System.out.println("Hashdexes:");
         for (Hashdex hashdex : hashdexes) {
@@ -31,7 +31,7 @@ public class DataPrinter {
             }
         }
 
-        // Print outfits
+        // print outfits
         List<Outfit> outfits = (List<Outfit>) data.get("outfits");
         System.out.println("Outfits:");
         for (Outfit outfit : outfits) {

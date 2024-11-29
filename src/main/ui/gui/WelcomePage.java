@@ -14,42 +14,43 @@ import java.awt.*;
 public class WelcomePage extends JFrame  {
 
     // FIELDS
-    
     private Boolean isMuted = false;
-    private Clip musicClip; // Store the current music clip
+    private Clip musicClip; // store the current music clip
 
-    // Constructor to set up GUI
+    // constructor to set up GUI
     public WelcomePage() {
         initializeUI();
     }
 
     public void initializeUI() {
-        setTitle("WELCOME"); // Title of window
-        setSize(600, 600); // Size of window
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close the application when the window is closed
+        setTitle("WELCOME"); // title of window
+        setSize(600, 600); // size of window
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close the application when the window is closed
         setLayout(null);
         
-        JButton startButton = createStartButton();
-        add(startButton);
+        JButton startButton = createStartButton(); // creates start button
+        add(startButton); // adds start button to frame
 
-        JLabel logoLabel = createBackground();
-        add(logoLabel);
+        JLabel logoLabel = createBackground(); // creates background
+        add(logoLabel); // add background to frame
 
-        playBackgroundMusic();
-        setVisible(true);
+        //playBackgroundMusic(); // unfinished
+        setVisible(true); // makes the window visible when ran
     }
 
-    // Method to set up the logo
+    /**
+     * EFFECTS: creates background using gif made
+     * */
     private JLabel createBackground() {
-        // Load the animated GIF (make sure the path is correct)
-        ImageIcon logoIcon = new ImageIcon("/Users/loic/Downloads/REHASH Mainscreen.gif");
+        
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/images/REHASH Mainscreen.gif"));
 
-        // Check if the image was loaded properly
+        // checks if the image was loaded properly
         if (logoIcon.getIconWidth() == -1) {
             System.out.println("Error: Image not found!");
         }
 
-        // Create a JLabel with the GIF as the icon
+        // creates a JLabel with the GIF as the icon
         JLabel logoLabel = new JLabel(logoIcon);
         logoLabel.setBounds(0, 0, getWidth(), getHeight());
         logoLabel.setLayout(null);
@@ -58,19 +59,19 @@ public class WelcomePage extends JFrame  {
     }
 
     private JButton createStartButton() {
-        // Load the start button image (replace with the correct path)
-        ImageIcon startButtonIcon = new ImageIcon("/Users/loic/Downloads/startButton.png");
+
+        ImageIcon startButtonIcon = new ImageIcon(getClass().getResource("/images/startButton.png"));
         
-        // Create a button with the image as its icon
+        // creates a button with the image as its icon
         JButton startButton = new JButton(startButtonIcon);
         
-        // Make the button look transparent (no borders, background, etc.)
+        // makes the button look transparent 
         startButton.setBorderPainted(false);
         startButton.setFocusPainted(false);
         startButton.setContentAreaFilled(false);
         
-        // Set the position and size of the button
-        startButton.setBounds(280, 450, 48, 48); // x, y, width, height
+        // sets the position and size of the button
+        startButton.setBounds(280, 450, 48, 48); 
 
         startButton.addActionListener(e -> showRehashGUI());
 
@@ -85,26 +86,21 @@ public class WelcomePage extends JFrame  {
     }
 
 
-    private void playBackgroundMusic() {
-        // List of songs in your playlist (replace with the correct file paths)
-        ArrayList<String> playlist = new ArrayList<>();
-        //playlist.add("/Users/loic/Downloads/Dhruv_Grieving.wav");
-        playlist.add("/Users/loic/Downloads/Frank_Ocean_Ivy.wav");
-        playlist.add("/Users/loic/Downloads/Troy_Sivan.wav");
-        playlist.add("/Users/loic/Downloads/Billie_Eilish.wav");
-        playlist.add("/Users/loic/Downloads/Beach_Weather.wav");
-        playlist.add("/Users/loic/Downloads/You get me so high.wav");
+    // private void playBackgroundMusic() {
 
-        // Randomly select a song from the playlist
-        Random random = new Random();
-        String selectedSong = playlist.get(random.nextInt(playlist.size()));
+    //     ArrayList<String> playlist = new ArrayList<>();
 
-        // Play the selected song
+    //     playlist.add("/Users/loic/Downloads/Frank_Ocean_Ivy.wav");
+    //     playlist.add("/Users/loic/Downloads/Troy_Sivan.wav");
+    //     playlist.add("/Users/loic/Downloads/Billie_Eilish.wav");
+    //     playlist.add("/Users/loic/Downloads/Beach_Weather.wav");
+    //     playlist.add("/Users/loic/Downloads/You get me so high.wav");
+
+    //     // randomly select a song from the playlist
+    //     Random random = new Random();
+    //     String selectedSong = playlist.get(random.nextInt(playlist.size()));
        
-    }
-
-
-
+    // }
 
 
 }

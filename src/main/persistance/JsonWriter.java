@@ -56,7 +56,7 @@ public class JsonWriter {
         for (Outfit o : outfits) {
             JSONObject json = new JSONObject();
             json.put("name", o.getName());
-            // Convert the hashes within this outfit to JSON
+            // converts the hashes within this outfit to JSON
             JSONArray hashesJson = new JSONArray();
 
             for (Hash h : o.getOutfitHashs()) {

@@ -15,16 +15,19 @@ public class Main {
     public static final String CYAN = "\u001B[36m";
 
     public static void main(String[] args) {
-        // Welcome message
-        // System.out.println(GREEN + "\nWelcome user to REHASH!");
-        // System.out.println("REHASH is designed for anyone who seeks inspiration for outfits,");
-        // System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
-        // System.out.println(" \nIt’s also for those who want to build collections");
-        // System.out.print("as share their personal styles to others who can appreciate their creation.");
-        // System.out.println("\n------------------------------------------------------------------------");
+        //To run console version, uncomment this
+       // Welcome message
+        System.out.println(GREEN + "\nWelcome user to REHASH!");
+        System.out.println("REHASH is designed for anyone who seeks inspiration for outfits,");
+        System.out.print("whether it’s for daily wear, or wardrobe planning for the week.");
+        System.out.println(" \nIt’s also for those who want to build collections");
+        System.out.print("as share their personal styles to others who can appreciate their creation.");
+        System.out.println("\n------------------------------------------------------------------------");
 
-        //RMenu menu = new RMenu();
-        
+        //uncomment this console ver 
+        // RehashTerminalVer rehash = new RehashTerminalVer();
+        // rehash.run();
+        // comment this to run console version
         guimain(args);
 
     }

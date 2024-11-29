@@ -5,7 +5,6 @@ import main.model.*;
 import main.persistance.JsonReader;
 import main.persistance.JsonWriter;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -47,15 +46,13 @@ public class RehashTerminalVer {
     public RehashTerminalVer() {
         scanner = new Scanner(System.in); // takes user input from terminal
         week = new Week();
-        hashes = new ArrayList<>(); // Initialize the list to store created hashes
-        hashdexes = new ArrayList<>(); // Initialize the list to store created hashdexs
+        hashes = new ArrayList<>(); // initialize the list to store created hashes
+        hashdexes = new ArrayList<>(); // initialize the list to store created hashdexs
         outfits = new ArrayList<>();
 
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
         dataPrinter = new DataPrinter();
-
-        //loadData(); // Load data at the start
     }
 
     public List<Hash> getHashes() {
@@ -71,7 +68,7 @@ public class RehashTerminalVer {
     }
 
     /*
-     * EFFECTS: draws menu options
+     * EFFECTS: runs program
      */
     public void run() {
         running = true;
@@ -80,6 +77,9 @@ public class RehashTerminalVer {
         }
     }
 
+    /*
+     * EFFECTS: draws menu options
+     */
     public void drawRehashMenu() {
         try {
             System.out.println(CYAN + "\nPlease Enter an Integer to select one of the following options: " + GREEN);
@@ -103,9 +103,8 @@ public class RehashTerminalVer {
     /*
      * EFFECTS: handles user input for appilciation menu
      */
-    @SuppressWarnings("methodlength")
     public void handleMenuSelection(int input) {
-        
+
         switch (input) {
             case 1:
                 createHash();
@@ -161,7 +160,7 @@ public class RehashTerminalVer {
         drawRehashMenu(); // Repeat the menu
     }
 
-    //----------------------- JSON DATA METHODS --------------------------
+    // ----------------------- JSON DATA METHODS --------------------------
     // EFFECTS: dislays all saved loaded data
     private void viewLoadedData() {
         System.out.println("\n");
@@ -172,10 +171,10 @@ public class RehashTerminalVer {
     // EFFECTS: loads hashes, hashdex, and outfits from file
     public void loadData() {
         try {
-            // Load the data into a map
+            // load sthe data into a map
             data = jsonReader.read();
-            
-            // Populate your data from the map
+
+            // get's data
             hashes = (List<Hash>) data.get("hashes");
             hashdexes = (List<Hashdex>) data.get("hashdexes");
             outfits = (List<Outfit>) data.get("outfits");
@@ -183,15 +182,15 @@ public class RehashTerminalVer {
         } catch (IOException e) {
             System.out.println("Failed to load data: " + e.getMessage());
         }
-    
+
     }
 
     // EFFECTS: saves hashes, hashdex, and outfits to file
     public void saveData() {
         try {
-            // Create a JsonWriter instance
+            // creates a JsonWriter instance
             JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
-            // Save the data (hashes, hashdexes, outfits)
+            // saves the data (hashes, hashdexes, outfits)
             jsonWriter.open();
             jsonWriter.write(hashes, hashdexes, outfits);
             jsonWriter.close();
@@ -209,7 +208,7 @@ public class RehashTerminalVer {
         hashdexes.clear();
         outfits.clear();
         System.out.println("In-memory data cleared.");
-    
+
         try {
             // Overwrite the file with empty data (or clear the file entirely)
             JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
@@ -222,8 +221,7 @@ public class RehashTerminalVer {
         }
     }
 
-
-    //----------------------- HASH METHODS --------------------------
+    // ----------------------- HASH METHODS --------------------------
     /*
      * EFFECTS: creates a hash (clothing item) with given name, colour, material,
      * types from user
@@ -262,7 +260,7 @@ public class RehashTerminalVer {
         handleMenuSelection(input);
     }
 
-    //----------------------- HASHDEX METHODS --------------------------
+    // ----------------------- HASHDEX METHODS --------------------------
 
     /*
      * REQUIRES: name and colour to have a non-zero length
@@ -282,7 +280,7 @@ public class RehashTerminalVer {
         String colour = scanner.nextLine(); // saves user input as colour
         Hashdex hash = new Hashdex(name, colour); // create hash object
 
-        hashdexes.add(hash); // Store the created hashdex
+        hashdexes.add(hash); // stores the created hashdex
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made a Hashdex!");
         System.out.println(GREEN + "To see your hashdex, press [6]...");
         System.out.println("To return to main menu, press [0]...");
@@ -343,11 +341,11 @@ public class RehashTerminalVer {
         return null;
     }
 
-        /**
+    /**
      * EFFECTS: Searches for a hashdex by name. Returns null if not found.
      */
     private Outfit findOutfitByName(String outfitName) {
-        for (Outfit o: outfits) {
+        for (Outfit o : outfits) {
             if (o.getName().equalsIgnoreCase(outfitName)) {
                 return o;
             }
@@ -355,7 +353,7 @@ public class RehashTerminalVer {
         return null;
     }
 
-    //----------------------- OUTFIT METHODS --------------------------
+    // ----------------------- OUTFIT METHODS --------------------------
     /*
      * REQUIRES: non-zero length
      * EFFECTS: creates a outfit with a given name
@@ -375,12 +373,13 @@ public class RehashTerminalVer {
 
         Outfit of = new Outfit(outfitName);
 
-
         outfits.add(of); // adds outfit to created outfit list
         System.out.println(YELLOW + "\nYou have SUCCESSFULLY made an Outfit!");
         outfitFollowUp();
     }
 
+
+    // EFFECTS: takes user input once a task is complete
     private void outfitFollowUp() {
         System.out.println(GREEN + "To add outfit to day of the week, press [5]...");
         System.out.println(GREEN + "To see your Outfit, press [7]...");
@@ -468,7 +467,7 @@ public class RehashTerminalVer {
         }
     }
 
-    //----------------------- DISPLAY METHODS --------------------------
+    // ----------------------- DISPLAY METHODS --------------------------
     /*
      * EFFECTS: displays the week with each days corresponding outfit
      */
@@ -503,7 +502,7 @@ public class RehashTerminalVer {
     private void viewHashdexs() {
         System.out.println(RED + "\nViewing your Hashdexes (closets):" + GREEN);
         for (Hashdex h : hashdexes) {
-            // Display items in the hashdex (use displayList() method in Hashdex class)
+            // Ddisplays items in the hashdex (use displayList() method in Hashdex class)
             System.out.println("Hashdex Name: " + h.getName());
             if (h.getHashList().isEmpty()) {
                 System.out.println("This hashdex is empty.");

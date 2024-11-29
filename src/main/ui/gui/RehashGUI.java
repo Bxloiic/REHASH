@@ -20,7 +20,7 @@ public class RehashGUI {
     private JTextArea textArea; // for displaying info
     private HashMap<String, Hash> hashes;
     private HashMap<String, Hashdex> hashdexes;
-    private HashMap<String, Outfit> outfits; // Store outfits by name
+    private HashMap<String, Outfit> outfits; // store outfits by name
     private Week week;
 
     // -------- button fields --------
@@ -37,9 +37,9 @@ public class RehashGUI {
     private JButton clearDataButton;
     private JButton exitButton;
 
-    @SuppressWarnings("methodlength")
+    
     public RehashGUI() {
-        // Initialize collections to store data
+        // initialize collections to store data
         hashes = new HashMap<>();
         hashdexes = new HashMap<>();
         outfits = new HashMap<>();
@@ -51,11 +51,11 @@ public class RehashGUI {
 
 
         textArea = new JTextArea(20, 40);
-        textArea.setEditable(false); // User should not edit this
+        textArea.setEditable(false); // user can't edit textarea
         textArea.setBackground(Color.decode("#dde7c7"));
         textArea.setBorder(BorderFactory.createLineBorder(Color.decode("#bfd8bd"), 2));
         textArea.setFont(new Font("Serif", Font.PLAIN, 15));
-        panel.add(new JScrollPane(textArea)); // Add text area with scroll
+        panel.add(new JScrollPane(textArea)); // add text area with scrollability
 
         createButtons();
         buttonListeners();
@@ -66,7 +66,7 @@ public class RehashGUI {
         frame.setVisible(true);
     }
 
-    @SuppressWarnings("methodlength")
+    
     private void createButtons() {
         // Buttons to interact with the program
         createHashButton = new JButton("Create a Hash");
@@ -83,6 +83,11 @@ public class RehashGUI {
         exitButton = new JButton("Exit");
 
         // Add buttons to panel
+        addToFrame();
+    }
+
+    private void addToFrame() {
+        // Add buttons to panel
         panel.add(createHashButton);
         panel.add(createHashdexButton);
         panel.add(viewHashesButton);
@@ -98,7 +103,7 @@ public class RehashGUI {
     }
 
     private void buttonListeners() {
-        // Action listeners for each button
+        // action listeners for each button
         createHashButton.addActionListener(e -> createHash());
         createHashdexButton.addActionListener(e -> createHashdex());
         viewHashesButton.addActionListener(e -> viewHashes());
@@ -271,7 +276,6 @@ public class RehashGUI {
 
     // ----------------------- JSON DATA METHODS --------------------------
     // EFFECTS: saves hashes, hashdex, and outfits to file
-    @SuppressWarnings("methodlength")
     private void saveData() {
         try {
             // Create a JSON object to hold all data
@@ -295,17 +299,23 @@ public class RehashGUI {
                 JSONObject hashdexObject = new JSONObject();
                 hashdexObject.put("name", hashdex.getName());
                 hashdexObject.put("colour", hashdex.getColour());
+
+                JSONArray hashdexHashesArray = new JSONArray();
+                for (Hash hash : hashdex.getHashList()) {
+                    hashdexHashesArray.put(hash.getName());
+                }
+                hashdexObject.put("hashes", hashdexHashesArray);
                 hashdexesArray.put(hashdexObject);
             }
             data.put("hashdexes", hashdexesArray);
 
-            // Serialize outfits
+            // serialize outfits
             JSONArray outfitsArray = new JSONArray();
             for (Outfit outfit : outfits.values()) {
                 JSONObject outfitObject = new JSONObject();
                 outfitObject.put("name", outfit.getName());
 
-                // Serialize the hashes in the outfit
+                // serializes the hashes in the outfit
                 JSONArray outfitHashesArray = new JSONArray();
                 for (Hash hash : outfit.getOutfitHashs()) {
                     outfitHashesArray.put(hash.getName());
@@ -315,9 +325,9 @@ public class RehashGUI {
             }
             data.put("outfits", outfitsArray);
 
-            // Save to file
+            // save to file
             FileWriter file = new FileWriter("./data/Rehash.json");
-            file.write(data.toString(4)); // Pretty print with indent of 4 spaces
+            file.write(data.toString(4)); // pretty print with indent of 4 spaces
             file.close();
 
             textArea.append("Data has been saved.\n");
@@ -328,10 +338,8 @@ public class RehashGUI {
 
     // MODIFIES: this
     // EFFECTS: loads hashes, hashdex, and outfits from file
-    @SuppressWarnings("methodlength")
     private void loadData() {
         try {
-            // Read the JSON file
             FileReader reader = new FileReader("./data/Rehash.json");
             StringBuilder content = new StringBuilder();
             int c;
@@ -339,40 +347,29 @@ public class RehashGUI {
                 content.append((char) c);
             }
             reader.close();
-
+    
             // Parse the JSON data
             JSONObject data = new JSONObject(content.toString());
-
-            // Load hashes
-            JSONArray hashesArray = data.getJSONArray("hashes");
-            for (int i = 0; i < hashesArray.length(); i++) {
-                JSONObject hashObject = hashesArray.getJSONObject(i);
-                String name = hashObject.getString("name");
-                String type = hashObject.getString("type");
-                String colour = hashObject.getString("colour");
-                String material = hashObject.getString("material");
-
-                Hash hash = new Hash(name, type, colour, material);
-                hashes.put(name, hash);
-            }
-
-            // Load hashdexes
-            JSONArray hashdexesArray = data.getJSONArray("hashdexes");
-            for (int i = 0; i < hashdexesArray.length(); i++) {
-                JSONObject hashdexObject = hashdexesArray.getJSONObject(i);
-                String name = hashdexObject.getString("name");
-                String colour = hashdexObject.getString("colour");
-
-                Hashdex hashdex = new Hashdex(name, colour);
-                hashdexes.put(name, hashdex);
-            }
-
-            // Load outfits
+    
+            // Delegate the loading tasks
+            loadHashes(data);
+            loadHashdexes(data);
+            loadOutfits(data);
+    
+        } catch (Exception e) {
+            textArea.append("Error loading data: " + e.getMessage() + "\n");
+        }
+    }
+    
+    // MODIFIES: this
+    // EFFECTS: loads outfits from file
+    public void loadOutfits(JSONObject data) {
+        try {
             JSONArray outfitsArray = data.getJSONArray("outfits");
             for (int i = 0; i < outfitsArray.length(); i++) {
                 JSONObject outfitObject = outfitsArray.getJSONObject(i);
                 String name = outfitObject.getString("name");
-
+    
                 Outfit outfit = new Outfit(name);
                 JSONArray outfitHashesArray = outfitObject.getJSONArray("hashes");
                 for (int j = 0; j < outfitHashesArray.length(); j++) {
@@ -384,22 +381,71 @@ public class RehashGUI {
                 }
                 outfits.put(name, outfit);
             }
-
-            textArea.append("Data has been loaded.\n");
+    
+            textArea.append("Outfits loaded successfully.\n");
         } catch (Exception e) {
-            textArea.append("Error loading data: " + e.getMessage() + "\n");
+            textArea.append("Error loading outfits: " + e.getMessage() + "\n");
         }
     }
+
+    // MODIFIES: this
+    // EFFECTS: loads hashes from file
+    private void loadHashes(JSONObject data) {
+        try {
+            JSONArray hashesArray = data.getJSONArray("hashes");
+            for (int i = 0; i < hashesArray.length(); i++) {
+                JSONObject hashObject = hashesArray.getJSONObject(i);
+                String name = hashObject.getString("name");
+                String type = hashObject.getString("type");
+                String colour = hashObject.getString("colour");
+                String material = hashObject.getString("material");
+    
+                Hash hash = new Hash(name, type, colour, material);
+                hashes.put(name, hash);
+            }
+            textArea.append("Hashes loaded successfully.\n");
+        } catch (Exception e) {
+            textArea.append("Error loading hashes: " + e.getMessage() + "\n");
+        }
+    }
+    
+    // MODIFIES: this
+    // EFFECTS: loads hashdex from file
+    private void loadHashdexes(JSONObject data) {
+        try {
+            JSONArray hashdexesArray = data.getJSONArray("hashdexes");
+            for (int i = 0; i < hashdexesArray.length(); i++) {
+                JSONObject hashdexObject = hashdexesArray.getJSONObject(i);
+                String name = hashdexObject.getString("name");
+                String colour = hashdexObject.getString("colour");
+    
+                Hashdex hashdex = new Hashdex(name, colour);
+                JSONArray hashdexHashesArray = hashdexObject.getJSONArray("hashes");
+                for (int j = 0; j < hashdexHashesArray.length(); j++) {
+                    String hashName = hashdexHashesArray.getString(j);
+                    Hash hash = hashes.get(hashName);
+                    if (hash != null) {
+                        hashdex.addHash(hash);
+                    }
+                }
+                hashdexes.put(name, hashdex);
+            }
+            textArea.append("Hashdexes loaded successfully.\n");
+        } catch (Exception e) {
+            textArea.append("Error loading hashdexes: " + e.getMessage() + "\n");
+        }
+    }
+    
 
     // EFFECTS: clears current data by writing empty JSON to the file
     private void clearData() {
         hashes.clear();
         hashdexes.clear();
-        outfits.clear(); // Clear all outfits
-        week = new Week(); // Reset the week
+        outfits.clear(); 
+        week = new Week(); 
         textArea.append("All data has been cleared.\n");
         try {
-            // Overwrite the file with empty data (or clear the file entirely)
+            // overrides the file with empty data 
             JsonWriter jsonWriter = new JsonWriter("./data/Rehash.json");
             jsonWriter.open();
             jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
