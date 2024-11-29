@@ -3,11 +3,15 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import main.ui.Event;
 import main.ui.EventLog;
+import main.persistance.Writable;
 
 // stores specifed hashes to make an outfit
-public class Outfit {
+public class Outfit implements Writable {
 
     // Attributes
     private String name; // Name of the item
@@ -51,6 +55,19 @@ public class Outfit {
     public void addHash(Hash hash) {
         outfitHashs.add(hash);
         EventLog.getInstance().logEvent(new Event("Added Hash: " + hash.getName() + " to Outfit: " + this.name));
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+
+        JSONArray hashesJson = new JSONArray();
+        for (Hash hash : outfitHashs) {
+            hashesJson.put(hash.toJson());
+        }
+        json.put("hashes", hashesJson);
+        return json;
     }
 
 }

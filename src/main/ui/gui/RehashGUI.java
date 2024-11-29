@@ -8,11 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import main.model.*;
+import main.persistance.JsonReader;
 import main.persistance.JsonWriter;
+import main.persistance.Writable;
 import main.ui.EventLog;
 import main.ui.Event;
 
 import java.util.*;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -277,60 +281,18 @@ public class RehashGUI implements WindowListener {
     // ----------------------- JSON DATA METHODS --------------------------
     // EFFECTS: saves hashes, hashdex, and outfits to file
     private void saveData() {
+
+        List<Writable> writables = new ArrayList<>();
+        writables.addAll(hashes.values()); // Add all Hash objects
+        writables.addAll(hashdexes.values()); // Add all Hashdex objects
+        writables.addAll(outfits.values()); // Add all Outfit objects
+        JsonWriter jsonWriter = new JsonWriter("./data/Rehash.json");
         try {
-            // Create a JSON object to hold all data
-            JSONObject data = new JSONObject();
+            jsonWriter.open();
+            jsonWriter.write(writables);
+            jsonWriter.close();
+            textArea.append("Data saved successfully.\n");
 
-            // Serialize hashes
-            JSONArray hashesArray = new JSONArray();
-            for (Hash hash : hashes.values()) {
-                JSONObject hashObject = new JSONObject();
-                hashObject.put("name", hash.getName());
-                hashObject.put("type", hash.getType());
-                hashObject.put("colour", hash.getColour());
-                hashObject.put("material", hash.getMaterial());
-                hashesArray.put(hashObject);
-            }
-            data.put("hashes", hashesArray);
-
-            // Serialize hashdexes
-            JSONArray hashdexesArray = new JSONArray();
-            for (Hashdex hashdex : hashdexes.values()) {
-                JSONObject hashdexObject = new JSONObject();
-                hashdexObject.put("name", hashdex.getName());
-                hashdexObject.put("colour", hashdex.getColour());
-
-                JSONArray hashdexHashesArray = new JSONArray();
-                for (Hash hash : hashdex.getHashList()) {
-                    hashdexHashesArray.put(hash.getName());
-                }
-                hashdexObject.put("hashes", hashdexHashesArray);
-                hashdexesArray.put(hashdexObject);
-            }
-            data.put("hashdexes", hashdexesArray);
-
-            // serialize outfits
-            JSONArray outfitsArray = new JSONArray();
-            for (Outfit outfit : outfits.values()) {
-                JSONObject outfitObject = new JSONObject();
-                outfitObject.put("name", outfit.getName());
-
-                // serializes the hashes in the outfit
-                JSONArray outfitHashesArray = new JSONArray();
-                for (Hash hash : outfit.getOutfitHashs()) {
-                    outfitHashesArray.put(hash.getName());
-                }
-                outfitObject.put("hashes", outfitHashesArray);
-                outfitsArray.put(outfitObject);
-            }
-            data.put("outfits", outfitsArray);
-
-            // save to file
-            FileWriter file = new FileWriter("./data/Rehash.json");
-            file.write(data.toString(4)); // pretty print with indent of 4 spaces
-            file.close();
-
-            textArea.append("Data has been saved.\n");
         } catch (Exception e) {
             textArea.append("Error saving data: " + e.getMessage() + "\n");
         }
@@ -340,99 +302,27 @@ public class RehashGUI implements WindowListener {
     // EFFECTS: loads hashes, hashdex, and outfits from file
     private void loadData() {
         try {
-            FileReader reader = new FileReader("./data/Rehash.json");
-            StringBuilder content = new StringBuilder();
-            int c;
-            while ((c = reader.read()) != -1) {
-                content.append((char) c);
-            }
-            reader.close();
+            JsonReader jsonReader = new JsonReader("./data/Rehash.json");
+            Map<String, Object> data = jsonReader.read();
 
-            // Parse the JSON data
-            JSONObject data = new JSONObject(content.toString());
+            List<Hash> loadedHashes = (List<Hash>) data.get("hashes");
+            List<Hashdex> loadedHashdexes = (List<Hashdex>) data.get("hashdexes");
+            List<Outfit> loadedOutfits = (List<Outfit>) data.get("outfits");
 
             // Delegate the loading tasks
-            loadHashes(data);
-            loadHashdexes(data);
-            loadOutfits(data);
+            for (Hash hash : loadedHashes) {
+                hashes.put(hash.getName(), hash);
+            }
+            for (Hashdex hashdex : loadedHashdexes) {
+                hashdexes.put(hashdex.getName(), hashdex);
+            }
+            for (Outfit outfit : loadedOutfits) {
+                outfits.put(outfit.getName(), outfit);
+            }
+            textArea.append("Data loaded successfully.\n");
 
         } catch (Exception e) {
             textArea.append("Error loading data: " + e.getMessage() + "\n");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads outfits from file
-    public void loadOutfits(JSONObject data) {
-        try {
-            JSONArray outfitsArray = data.getJSONArray("outfits");
-            for (int i = 0; i < outfitsArray.length(); i++) {
-                JSONObject outfitObject = outfitsArray.getJSONObject(i);
-                String name = outfitObject.getString("name");
-
-                Outfit outfit = new Outfit(name);
-                JSONArray outfitHashesArray = outfitObject.getJSONArray("hashes");
-                for (int j = 0; j < outfitHashesArray.length(); j++) {
-                    String hashName = outfitHashesArray.getString(j);
-                    Hash hash = hashes.get(hashName);
-                    if (hash != null) {
-                        outfit.addHash(hash);
-                    }
-                }
-                outfits.put(name, outfit);
-            }
-
-            textArea.append("Outfits loaded successfully.\n");
-        } catch (Exception e) {
-            textArea.append("Error loading outfits: " + e.getMessage() + "\n");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads hashes from file
-    private void loadHashes(JSONObject data) {
-        try {
-            JSONArray hashesArray = data.getJSONArray("hashes");
-            for (int i = 0; i < hashesArray.length(); i++) {
-                JSONObject hashObject = hashesArray.getJSONObject(i);
-                String name = hashObject.getString("name");
-                String type = hashObject.getString("type");
-                String colour = hashObject.getString("colour");
-                String material = hashObject.getString("material");
-
-                Hash hash = new Hash(name, type, colour, material);
-                hashes.put(name, hash);
-            }
-            textArea.append("Hashes loaded successfully.\n");
-        } catch (Exception e) {
-            textArea.append("Error loading hashes: " + e.getMessage() + "\n");
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads hashdex from file
-    private void loadHashdexes(JSONObject data) {
-        try {
-            JSONArray hashdexesArray = data.getJSONArray("hashdexes");
-            for (int i = 0; i < hashdexesArray.length(); i++) {
-                JSONObject hashdexObject = hashdexesArray.getJSONObject(i);
-                String name = hashdexObject.getString("name");
-                String colour = hashdexObject.getString("colour");
-
-                Hashdex hashdex = new Hashdex(name, colour);
-                JSONArray hashdexHashesArray = hashdexObject.getJSONArray("hashes");
-                for (int j = 0; j < hashdexHashesArray.length(); j++) {
-                    String hashName = hashdexHashesArray.getString(j);
-                    Hash hash = hashes.get(hashName);
-                    if (hash != null) {
-                        hashdex.addHash(hash);
-                    }
-                }
-                hashdexes.put(name, hashdex);
-            }
-            textArea.append("Hashdexes loaded successfully.\n");
-        } catch (Exception e) {
-            textArea.append("Error loading hashdexes: " + e.getMessage() + "\n");
         }
     }
 
@@ -447,7 +337,10 @@ public class RehashGUI implements WindowListener {
             // overrides the file with empty data
             JsonWriter jsonWriter = new JsonWriter("./data/Rehash.json");
             jsonWriter.open();
-            jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+            List<Writable> emptyWritableList = new ArrayList<>();
+
+            jsonWriter.write(emptyWritableList);
             jsonWriter.close();
             System.out.println("Data file cleared.");
         } catch (IOException e) {
@@ -502,13 +395,11 @@ public class RehashGUI implements WindowListener {
 
     @Override
     public void windowIconified(WindowEvent e) {
-        // TODO Auto-generated method stub
         displayMessage("WindowListener method called: windowIconified.");
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        // TODO Auto-generated method stub
         displayMessage("WindowListener method called: windowDeiconified.");
     }
 

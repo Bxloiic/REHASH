@@ -40,6 +40,12 @@ It’s an essential aspect of life as others always get a first impression from 
     Fri Nov 29 03:49:55 PST 2024
     Added Hash: Nike 3000s to Outfit: Jeanne
 
+### Phase 4: Task 3: 
+Although I believe my current program turned out better than I imagined. There are a couple aspects I would change if given more time.
+1. Interfaces: If given more time, I would increase the amount of interfaces I used. In my current implementation alot of my classes have methods that do similar things but have personalized implementations; resulting in repeitiveness of my code. I would create more interfaces to have more encapsulation, less repitivity, and increase the overall robustness of my code
+2. Exceptions: Another thing I would add is making specialized exceptions for matters pretaining to my code. Although there are some good ones the java library gives you, creating personalized exceptions for a variety of scenarioes in your code can be quiet helpful when debugging. It's also a great skill to show off.
+3. Abstract Classes: I would add an abstract class to my code. Some of my classes such as Outfit and Hashdex share a lot of the same methdos (addHashTo...). I could've used an abstract class to encapsulate these behaviours and avoid duplication.
+
 
 ### FAQ
 

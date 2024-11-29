@@ -25,8 +25,8 @@ public class Main {
         // System.out.println("\n------------------------------------------------------------------------");
 
         //uncomment this console ver 
-        // RehashConsole rehash = new RehashConsole();
-        // rehash.run();
+        //RehashConsole rehash = new RehashConsole();
+        //rehash.run();
         // comment this to run console version
         guiMain(args);
 

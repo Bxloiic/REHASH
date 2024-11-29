@@ -33,14 +33,29 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of hashes, hashdexes, and outfits to file
-    public void write(List<Hash> hashes, List<Hashdex> hashdexes, List<Outfit> outfits) throws IOException {
-        JSONObject json = new JSONObject();
-        json.put("hashes", hashesToJson(hashes));
-        json.put("hashdexes", hashdexesToJson(hashdexes));
-        json.put("outfits", outfitsToJson(outfits));
+    public void write(List<Writable> writables) throws IOException {
+        JSONObject jsonObject = new JSONObject();
 
-        try (FileWriter file = new FileWriter(this.file)) {
-            file.write(json.toString(TAB));
+        JSONArray hashdexesJson = new JSONArray();
+        JSONArray hashesJson = new JSONArray();
+        JSONArray outfitsJson = new JSONArray();
+
+        for (Writable writable : writables) {
+            if (writable instanceof Hashdex) {
+                hashdexesJson.put(writable.toJson());
+            } else if (writable instanceof Hash) {
+                hashesJson.put(writable.toJson());
+            } else if (writable instanceof Outfit) {
+                outfitsJson.put(writable.toJson());
+            }
+        }
+
+        jsonObject.put("hashdexes", hashdexesJson);
+        jsonObject.put("hashes", hashesJson);
+        jsonObject.put("outfits", outfitsJson);
+
+        try (FileWriter fileWriter = new FileWriter(this.file)) {
+            fileWriter.write(jsonObject.toString(TAB));  // Pretty print with indentation
         }
     }
 
@@ -48,71 +63,6 @@ public class JsonWriter {
     // EFFECTS: closes writer
     public void close() {
         writer.close();
-    }
-
-    // EFFECTS: returns JSON array of outfits
-    private JSONArray outfitsToJson(List<Outfit> outfits) {
-        JSONArray jsonArray = new JSONArray();
-        for (Outfit o : outfits) {
-            JSONObject json = new JSONObject();
-            json.put("name", o.getName());
-            // converts the hashes within this outfit to JSON
-            JSONArray hashesJson = new JSONArray();
-
-            for (Hash h : o.getOutfitHashs()) {
-                // objects
-                JSONObject hashJson = new JSONObject();
-                hashJson.put("type", h.getType());
-                hashJson.put("name", h.getName());
-                hashJson.put("colour", h.getColour());
-                hashJson.put("material", h.getMaterial());
-                hashesJson.put(hashJson);
-            }
-            json.put("hashes", hashesJson);
-            jsonArray.put(json);
-        }
-        return jsonArray;
-    }
-
-    // EFFECTS: returns JSON array of hashes
-    private JSONArray hashesToJson(List<Hash> hashes) {
-        JSONArray jsonArray = new JSONArray();
-        for (Hash h : hashes) {
-            JSONObject json = new JSONObject();
-            json.put("type", h.getType());
-            json.put("name", h.getName());
-            json.put("colour", h.getColour());
-            json.put("material", h.getMaterial());
-            jsonArray.put(json);
-        }
-
-        return jsonArray;
-    }
-
-    // EFFECTS: returns JSON array of hashdex
-    private JSONArray hashdexesToJson(List<Hashdex> hashdexs) {
-        JSONArray jsonArray = new JSONArray();
-        for (Hashdex h : hashdexs) {
-            JSONObject json = new JSONObject();
-            json.put("name", h.getName());
-            json.put("colour", h.getColour());
-
-            JSONArray hashesJson = new JSONArray();
-            for (Hash hash : h.getHashList()) {
-                // objects
-                JSONObject hashJson = new JSONObject();
-                hashJson.put("type", hash.getType());
-                hashJson.put("name", hash.getName());
-                hashJson.put("colour", hash.getColour());
-                hashJson.put("material", hash.getMaterial());
-                hashesJson.put(hashJson);
-            }
-            json.put("hashes", hashesJson);
-            jsonArray.put(json);
-
-        }
-
-        return jsonArray;
     }
 
 }

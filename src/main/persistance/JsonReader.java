@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-
 import org.json.*;
 
 // Represents a reader that reads data from JSON stored in file 
@@ -23,7 +22,8 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads hashes, hashdexes, and outfits from file and returns them as a Map<String, Object>;
+    // EFFECTS: reads hashes, hashdexes, and outfits from file and returns them as a
+    // Map<String, Object>;
     // throws IOException if an error occurs reading data from file
     public Map<String, Object> read() throws IOException {
         String jsonData = readFile(source);
@@ -44,15 +44,13 @@ public class JsonReader {
     private Map<String, Object> parseData(JSONObject jsonObject) {
         Map<String, Object> data = new HashMap<>();
 
-       // Parse hashes
+        // Parse the groups of data from the JSON object
         List<Hash> hashes = parseHashes(jsonObject.getJSONArray("hashes"));
         data.put("hashes", hashes);
 
-        // Parse hashdexes
         List<Hashdex> hashdexes = parseHashdexes(jsonObject.getJSONArray("hashdexes"), hashes);
         data.put("hashdexes", hashdexes);
 
-        // Parse outfits
         List<Outfit> outfits = parseOutfits(jsonObject.getJSONArray("outfits"), hashes);
         data.put("outfits", outfits);
 
@@ -62,7 +60,7 @@ public class JsonReader {
     // EFFECTS: parses a list of hashes from JSON array and returns it
     private List<Hash> parseHashes(JSONArray jsonArray) {
         List<Hash> hashes = new ArrayList<>();
-        for (Object json : jsonArray) { //cycles json objects in the arrayz
+        for (Object json : jsonArray) { // cycles json objects in the arrayz
             JSONObject nextHash = (JSONObject) json; // get hashdex in JSON format
             String name = nextHash.getString("name"); // get name of hash
             String type = nextHash.getString("type"); // get type of hash
@@ -115,13 +113,13 @@ public class JsonReader {
                     outfit.addHash(hash);
                 }
             }
-
             outfits.add(outfit);
         }
         return outfits;
     }
 
-    // EFFECTS: finds a hash by its name in the list of hashes, or returns null if not found
+    // EFFECTS: finds a hash by its name in the list of hashes, or returns null if
+    // not found
     private Hash findHashByName(List<Hash> hashes, String name) {
         for (Hash hash : hashes) {
             if (hash.getName().equals(name)) {

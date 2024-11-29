@@ -2,11 +2,15 @@ package main.model;
 
 import java.util.*; //imports whole java util library
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import main.ui.Event;
 import main.ui.EventLog;
+import main.persistance.Writable;
 
 //a virtual closet that can be customized to make a uniquely themed closet
-public class Hashdex {
+public class Hashdex implements Writable {
 
     // Attributes
     private String name; // name of hashdex
@@ -111,6 +115,20 @@ public class Hashdex {
             hashList.add(hash); // gets hashlist and adds
             EventLog.getInstance().logEvent(new Event("Saved Hash: " + hash.getName() + " to Hashdex: " + this.name));
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("colour", colour);
+
+        JSONArray hashesJson = new JSONArray();
+        for (Hash hash : hashList) {
+            hashesJson.put(hash.toJson());
+        }
+        json.put("hashes", hashesJson);
+        return json;
     }
 
 }

@@ -4,6 +4,7 @@ package main.ui;
 import main.model.*;
 import main.persistance.JsonReader;
 import main.persistance.JsonWriter;
+import main.persistance.Writable;
 
 import java.io.IOException;
 import java.util.*;
@@ -104,7 +105,6 @@ public class RehashConsole {
      * EFFECTS: handles user input for appilciation menu
      */
     public void handleMenuSelection(int input) {
-
         switch (input) {
             case 1:
                 createHash();
@@ -174,10 +174,20 @@ public class RehashConsole {
             // load sthe data into a map
             data = jsonReader.read();
 
+            hashes.clear();
+            hashdexes.clear();
+            outfits.clear();
+
             // get's data
-            hashes = (List<Hash>) data.get("hashes");
-            hashdexes = (List<Hashdex>) data.get("hashdexes");
-            outfits = (List<Outfit>) data.get("outfits");
+            for (Writable writable : (List<Writable>) data.get("hashes")) {
+                hashes.add((Hash) writable);
+            }
+            for (Writable writable : (List<Writable>) data.get("hashdexes")) {
+                hashdexes.add((Hashdex) writable);
+            }
+            for (Writable writable : (List<Writable>) data.get("outfits")) {
+                outfits.add((Outfit) writable);
+            }
             System.out.println("Data successfully loaded from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Failed to load data: " + e.getMessage());
@@ -188,11 +198,13 @@ public class RehashConsole {
     // EFFECTS: saves hashes, hashdex, and outfits to file
     public void saveData() {
         try {
-            // creates a JsonWriter instance
-            JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
-            // saves the data (hashes, hashdexes, outfits)
+            List<Writable> writableData = new ArrayList<>();
+            writableData.addAll(hashes);
+            writableData.addAll(hashdexes);
+            writableData.addAll(outfits);
+
             jsonWriter.open();
-            jsonWriter.write(hashes, hashdexes, outfits);
+            jsonWriter.write(writableData);
             jsonWriter.close();
             System.out.println("Data successfully saved to " + JSON_STORE);
         } catch (IOException e) {
@@ -211,9 +223,10 @@ public class RehashConsole {
 
         try {
             // Overwrite the file with empty data (or clear the file entirely)
-            JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+            List<Writable> writableData = new ArrayList<>();
+
             jsonWriter.open();
-            jsonWriter.write(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            jsonWriter.write(writableData);
             jsonWriter.close();
             System.out.println("Data file cleared.");
         } catch (IOException e) {

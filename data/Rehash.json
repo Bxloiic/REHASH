@@ -1,38 +1,44 @@
 {
-    "hashdexes": [
-        {
-            "colour": "Technacolour",
-            "name": "Y2K",
-            "hashes": []
-        },
-        {
-            "colour": "Metallic",
-            "name": "Bayonetta 4",
-            "hashes": ["Netta's"]
-        }
-    ],
+    "hashdexes": [{
+        "colour": "Metallic",
+        "name": "Cerazas Closet",
+        "hashes": [
+            {
+                "colour": "Gray Silver",
+                "material": "Glass, Metal",
+                "name": "Netta's",
+                "type": "Glasses"
+            },
+            {
+                "colour": "Brown",
+                "material": "Suede, Rubber",
+                "name": "Nike 3000s",
+                "type": "low-rise dunks"
+            }
+        ]
+    }],
     "hashes": [
         {
-            "colour": "Red",
+            "colour": "Black",
             "material": "Leather",
-            "name": "Zip Pumps",
-            "type": "High-kneeheel boots"
-        },
-        {
-            "colour": "Black, Brown",
-            "material": "Cotton",
-            "name": "CTRL love",
-            "type": "t-shirt"
+            "name": "BB Belt",
+            "type": "Acessory"
         },
         {
             "colour": "Gray Silver",
-            "material": "Metal, Silver",
+            "material": "Glass, Metal",
             "name": "Netta's",
             "type": "Glasses"
         },
         {
-            "colour": "Brown, White",
-            "material": "suede, rubber",
+            "colour": "Red",
+            "material": "Leather",
+            "name": "Zip Pumps",
+            "type": "Knee-high heel boots"
+        },
+        {
+            "colour": "Brown",
+            "material": "Suede, Rubber",
             "name": "Nike 3000s",
             "type": "low-rise dunks"
         }
@@ -40,10 +46,10 @@
     "outfits": [
         {
             "name": "Jeanne",
-            "hashes": ["Nike 3000s"]
+            "hashes": []
         },
         {
-            "name": "Lucas Loverboy Era",
+            "name": "Bayonetta",
             "hashes": []
         }
     ]

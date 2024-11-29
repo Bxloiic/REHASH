@@ -5,6 +5,7 @@ import java.util.*; //imports whole java util library
 
 import main.ui.Event;
 import main.ui.EventLog;
+import main.persistance.Writable;
 
 // Calendar which stores an outfits/day of the week
 public class Week {

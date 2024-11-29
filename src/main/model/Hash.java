@@ -3,11 +3,14 @@ package main.model;
 // imports
 import java.util.*; //imports whole java util library
 
+import org.json.JSONObject;
+
 import main.ui.Event;
 import main.ui.EventLog;
+import main.persistance.Writable;
 
 //the objects that will be added to closet
-public class Hash {
+public class Hash implements Writable {
 
     // Attributes
     private String material; // Material of the item (wool, cotton, etc)
@@ -132,7 +135,7 @@ public class Hash {
      */
     public void removeTag() {
         EventLog.getInstance()
-                .logEvent(new Event("Tag : " + this.tags.get(tags.size()-1) + "removed from hash: " + this.name));
+                .logEvent(new Event("Tag : " + this.tags.get(tags.size() - 1) + "removed from hash: " + this.name));
         this.tags.remove(tags.size() - 1); // removes the most recently added element
 
     }
@@ -144,6 +147,17 @@ public class Hash {
      */
     public void removeTag(String str) {
         this.tags.remove(str); // removed ibject at specified index
+    }
+
+    
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("type", type);
+        json.put("colour", colour);
+        json.put("material", material);
+        return json;
     }
 
 }
